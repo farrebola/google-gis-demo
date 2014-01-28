@@ -7,15 +7,16 @@
 				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
 				<span id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
 			</div>
-			<div class="input-group">
-				<div class="checkbox-header">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
 					<span class="col-md-7">Tube line stations: </span>
 					<label class="checkbox col-md-5">
                 		<input type="checkbox">
                 		Mark all
             		</label>
 				</div>
-				<ul class="dropdown-menu-form col-md-12">
+				<div class="panel-body">
+					<ul class="dropdown-menu-form col-md-12">
         			<li>
             			<label class="checkbox">
                 			<input type="checkbox">
@@ -41,14 +42,18 @@
             			</label>
         			</li>
     			</ul>
-    			<div class="checkbox-header">
+				</div>
+			</div>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
 					<span class="col-md-7">Places: </span>
 					<label class="checkbox col-md-5">
                 		<input type="checkbox">
                 		Mark all
             		</label>
 				</div>
-				<ul class="dropdown-menu-form col-md-12">
+				<div class="panel-body">
+					<ul class="dropdown-menu-form col-md-12">
         			<li>
             			<label class="checkbox">
                 			<input type="checkbox">
@@ -80,7 +85,8 @@
             			</label>
         			</li>
     			</ul>
-    		</div><!-- /input-group -->
+				</div>
+			</div>
     	</form>
 	</div>
 </li>
