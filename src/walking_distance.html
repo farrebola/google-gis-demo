@@ -1,0 +1,10 @@
+<li class="walkingDistance dropdown" ng-controller="WalkingDistanceCtrl">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Walking distance <span class="badge">2</span> <b class="caret"></b></a>
+	<div class="dropdown-menu">
+		<div class="input-slider">
+			<input id="wds" type="text" data-slider-min="{{minValue}}" data-slider-max="{{maxValue}}" data-slider-step="1" data-slider-value="{{value}}"
+				ng-model="value"/>
+			<span id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
+		</div>
+	</div>
+</li>
