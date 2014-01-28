@@ -11,30 +11,30 @@
 .slider-handle.round {
 	background-color: blue;
 	border-radius: 50%;
-	background-image: linear-gradient(to bottom, #149bdf 0%, #0480be 100%);
+	background-image: linear-gradient(to bottom, #428bca 0%, #428bca 100%);
 }
 #wdsCurrentSliderValLabel {
 	margin-left: 10px;
 }
-.input-group {
-	width: 260px;
-	margin-left: 20px;
-	margin-right: 20px;
-}
-.input-group label {
+.panel .checkbox {
 	font-weight: normal;
 }
-.checkbox-header .checkbox {
+.panel-primary {
+	margin: 20px 20px 20px 20px;
+}
+.panel-heading {
+	border-bottom: 20px solid transparent;
+	padding: 10px 0px;
+}
+.panel-heading .checkbox {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
-ul.dropdown-menu-form {
-    padding: 5px 0 0;
+.panel-body {
+	padding: 0 0 0 0;
+}
+.panel-body ul.dropdown-menu-form {
     max-height: 100px;
     overflow-y: scroll;
-    border: 1px;
-	border-style: solid;
 	padding: 0 0 0 10px;
-	margin-top: 10px;
-	margin-bottom: 20px;
 }
