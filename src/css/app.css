@@ -1,0 +1,26 @@
+.dropdown-menu {
+	width: 300px;
+	padding: 20px 20px 20px 20px;
+}
+.panel .checkbox {
+	font-weight: normal;
+}
+.panel .span {
+	margin-left: 5px;
+}
+.panel-heading {
+	border-bottom: 20px solid transparent;
+	padding: 10px 0px;
+}
+.panel-heading .checkbox {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.panel-body {
+	padding: 0 0 0 0;
+}
+.panel-body ul.checkbox-list {
+    max-height: 100px;
+    overflow-y: scroll;
+	padding: 0 0 0 10px;
+}
