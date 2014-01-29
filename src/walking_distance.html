@@ -1,5 +1,5 @@
 <li class="walkingDistance dropdown" ng-controller="WalkingDistanceCtrl">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Walking distance <span class="badge">2</span> <b class="caret"></b></a>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Walking distance <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<form>
 			<div class="panel">
@@ -9,36 +9,18 @@
 			</div>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<span class="col-md-7">Tube line stations: </span>
-					<label class="checkbox col-md-5">
-                		<input type="checkbox">
+					Tube line stations
+					<label class="checkbox pull-right">
+                		<input type="checkbox" ng-click="toggleLines()" ng-model="allLinesOn">
                 		Mark all
             		</label>
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li>
+        			<li ng-repeat="tubeLine in tubeLines">
             			<label class="checkbox">
-                			<input type="checkbox">
-                			Line 1
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Line 2
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Line 3
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Line 4
+                			<input type="checkbox" ng-model="tubeLine.checked">
+                			{{tubeLine.label}}
             			</label>
         			</li>
     			</ul>
@@ -46,44 +28,20 @@
 			</div>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<span class="col-md-7">Places: </span>
-					<label class="checkbox col-md-5">
-                		<input type="checkbox">
+					Places
+					<label class="checkbox pull-right">
+                		<input type="checkbox" ng-model="allPlacesOn" ng-click="togglePlaces()" />
                 		Mark all
             		</label>
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li>
+        			<li ng-repeat="placeKind in placeKinds">
             			<label class="checkbox">
-                			<input type="checkbox">
-                			Groceries
+                			<input type="checkbox" class="placeKindCB" ng-model="placeKind.checked">
+                			{{placeKind.label}}
             			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Coffe Shops
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Stuff from google places
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			HighSchool
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Restaurants
-            			</label>
-        			</li>
+        			</li>        			
     			</ul>
 				</div>
 			</div>
