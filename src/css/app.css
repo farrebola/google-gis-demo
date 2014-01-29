@@ -8,10 +8,7 @@
 .panel .span {
 	margin-left: 5px;
 }
-.panel-heading {
-	border-bottom: 20px solid transparent;
-	padding: 10px 0px;
-}
+
 .panel-heading .checkbox {
 	margin-top: 0px;
 	margin-bottom: 0px;
