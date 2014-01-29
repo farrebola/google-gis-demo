@@ -1,40 +1,9 @@
-.dropdown-menu {
-	width: 300px;
-}
-.input-slider {
-	margin: 20px 20px 20px 20px;
-}
 .slider-horizontal {
 	width: 200px !important;
-	margin-top: 5px;
+	margin-top: 10px;
 }
 .slider-handle.round {
 	background-color: blue;
 	border-radius: 50%;
 	background-image: linear-gradient(to bottom, #428bca 0%, #428bca 100%);
-}
-#wdsCurrentSliderValLabel {
-	margin-left: 10px;
-}
-.panel .checkbox {
-	font-weight: normal;
-}
-.panel-primary {
-	margin: 20px 20px 20px 20px;
-}
-.panel-heading {
-	border-bottom: 20px solid transparent;
-	padding: 10px 0px;
-}
-.panel-heading .checkbox {
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-.panel-body {
-	padding: 0 0 0 0;
-}
-.panel-body ul.dropdown-menu-form {
-    max-height: 100px;
-    overflow-y: scroll;
-	padding: 0 0 0 10px;
 }

@@ -2,10 +2,10 @@
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Walking distance <span class="badge">2</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<form>
-			<div class="input-slider">
+			<div class="panel">
 				<span>Maximum walking time: </span>
 				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
-				<span id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
+				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
 			</div>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -16,7 +16,7 @@
             		</label>
 				</div>
 				<div class="panel-body">
-					<ul class="dropdown-menu-form col-md-12">
+					<ul class="checkbox-list col-md-12">
         			<li>
             			<label class="checkbox">
                 			<input type="checkbox">
@@ -53,7 +53,7 @@
             		</label>
 				</div>
 				<div class="panel-body">
-					<ul class="dropdown-menu-form col-md-12">
+					<ul class="checkbox-list col-md-12">
         			<li>
             			<label class="checkbox">
                 			<input type="checkbox">

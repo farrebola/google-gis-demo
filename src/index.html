@@ -7,6 +7,8 @@
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap-slider/slider.css" rel="stylesheet" media="screen">
 	    <link href="css/walking_distance.css" rel="stylesheet" media="screen">
+	    <link href="css/neighbourhoods.css" rel="stylesheet" media="screen">
+	    <link href="css/app.css" rel="stylesheet" media="screen">
 	 
 	    <!-- librerías opcionales que activan el soporte de HTML5 para IE8 -->
 	    <!--[if lt IE 9]>
@@ -26,6 +28,7 @@
     	
     	<script src="js/googleGisDemo.js"></script>
     	<script src="js/walkingDistance.js"></script>
+    	<script src="js/neighbourhoods.js"></script>
     	<script src="js/angularSlider.js"></script>
 	</head>
 
@@ -46,9 +49,8 @@
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					    <ul class="nav navbar-nav" ng-include="'walking_distance.html'">
-					    	
-					    </ul>
+					    <ul class="nav navbar-nav" ng-include="'walking_distance.html'"></ul>
+					    <ul class="nav navbar-nav" ng-include="'neighbourhoods.html'"></ul>
 					    <ul class="nav navbar-nav navbar-right">
 						      <li class="dropdown">
 						        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
