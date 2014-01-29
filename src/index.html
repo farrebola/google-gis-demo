@@ -71,14 +71,17 @@
 		
 		
 		<div class="container-fluid">
-			<div class="row-fluid">
-				<div class="col-md-3">
-					Left Pane
+			<div class="row-fluid full-height">
+				<div class="col-md-4 full-height">				
+				  <a href="#" class="list-group-item" ng-repeat="result in results">
+				    <h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
+				    <p class="list-group-item-text">{{result.properties.price}} € / {{result.properties.agent_phone}}</p>				    
+				  </a>
 				</div>
+				
 
-				<div class="col-md-9">
-
-					<div id="map" style="height: 600px"></div>
+				<div class="col-md-8 full-height ">
+					<div id="map" class="full-height well"></div>
 				</div>
 			</div>
 		</div>
