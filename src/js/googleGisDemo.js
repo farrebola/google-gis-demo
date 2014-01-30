@@ -14,7 +14,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http) {
 		center: new google.maps.LatLng(51.507222,  -0.1275),
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);	
+	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 	$scope.doRequest = function(page) {
 		$http({method: 'GET', url: 'https://www.googleapis.com/mapsengine/v1/tables/17054336369362646689-16143158689603361093/features?version=published&key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k'})
