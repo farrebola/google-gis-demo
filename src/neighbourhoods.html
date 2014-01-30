@@ -1,10 +1,10 @@
 <li class="neighbourhoods dropdown" ng-controller="NeighbourhoodsCtrl">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neighbourhoods</a>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neighbourhoods <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<form>
 			<div class="panel">
 				<label class="checkbox">
-					<input type="checkbox">
+					<input type="checkbox" ng-click="toggleNeighbourhoods()" ng-model="allNeighbourhoodsOn">
 					Show neighbourhoods outline
             	</label>
 			</div>
@@ -14,24 +14,12 @@
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Chelsea
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Neighbourhood 2
-            			</label>
-        			</li>
-        			<li>
-            			<label class="checkbox">
-                			<input type="checkbox">
-                			Neighbourhood
-            			</label>
-        			</li>
+        			<li ng-repeat="neighbourhoodName in neighbourhoodsNames">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="neighbourhoodName.checked">
+                            {{neighbourhoodName.label}}
+                        </label>
+                    </li>
     			</ul>
 				</div>
 			</div>
