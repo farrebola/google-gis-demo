@@ -2,11 +2,11 @@
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Walking distance <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<form>
-			<div class="panel">
+			<p>
 				<span>Maximum walking time: </span>
 				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
 				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
-			</div>
+			</p>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					Tube line stations
