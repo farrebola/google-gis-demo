@@ -36,12 +36,25 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 		}
 		infowindow.close();
 	};
+	$scope.dragArea = function(el){
+		if(!featureOnAir.getDraggable()){
+			featureOnAir.setDraggable(true);
+			featureOnAir.$scope.dragging = true;
+		}else{
+			featureOnAir.setDraggable(false);
+			featureOnAir.$scope.dragging = false;
+		}
+	};
+	$scope.removeArea = function(el){
+		featureOnAir.setMap(null);
+		google.maps.event.trigger(featureOnAir, 'remove');
+	};
 	var arrayFeatures = [];
 	var contentHtml = 
 		'<div class="btn-group btn-group-justified">' + 
 			'<a role="button" class="btn btn-default" ng-click="editArea()" ng-class="{active:drawing}"><span class="glyphicon glyphicon-pencil"></span></a>' + 
-			'<a role="button" class="btn btn-default"><span class="glyphicon glyphicon-move"></a>' +
-			'<a role="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></a>' + 
+			'<a role="button" class="btn btn-default" ng-click="dragArea()" ng-class="{active:dragging}"><span class="glyphicon glyphicon-move"></a>' +
+			'<a role="button" class="btn btn-default" ng-click="removeArea()"><span class="glyphicon glyphicon-trash"></a>' + 
 		'</div>';
 	var infowindow = new google.maps.InfoWindow({
     	content: contentHtml,
@@ -52,6 +65,7 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 			var feature = event.overlay;
 			feature.$scope = $scope.$new();
 			feature.$scope.drawing = false;
+			feature.$scope.dragging = false;
 			google.maps.event.addListener(feature, 'click', function(evt){
           		if (evt) {
              		point = evt.latLng;
@@ -61,6 +75,22 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
           		infowindow.setContent(compile[0]);
           		infowindow.setPosition(point);
           		infowindow.open($scope.map);
+			});
+			google.maps.event.addListener(feature, 'dragstart', function(evt){
+          		infowindow.close($scope.map);
+			});
+			google.maps.event.addListener(feature, 'dragend', function(evt){
+				var bounds = new google.maps.LatLngBounds();
+				var path = feature.getPath().getArray();
+				for (var i=0; i<path.length; i++){
+					bounds.extend(path[i]);
+				}
+				var center = bounds.getCenter();
+				infowindow.setPosition(center);
+          		infowindow.open($scope.map);
+			});
+			google.maps.event.addListener(feature, 'remove', function(evt){
+          		infowindow.close($scope.map);
 			});
 			arrayFeatures.push(feature);
 		}
