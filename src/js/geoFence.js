@@ -104,5 +104,6 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 			arrayFeatures[i].setMap(null);
 		};
 		arrayFeatures = [];
+		infowindow.close($scope.map);
 	};
 });
