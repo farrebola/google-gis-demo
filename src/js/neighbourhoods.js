@@ -1,7 +1,8 @@
-googleGisDemo.controller("NeighbourhoodsCtrl", function($scope) {
+googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
 	$scope.resultsFound ="";
 	$scope.clickOnShape = false;
 	$scope.allNeighbourhoodsOn = false;
+	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/01048493643384141193-17488941626782682984/features/';
 	$scope.neighbourhoodsNames = [
 		{ label: "Neighbourhood 1", checked: false},
 		{ label: "Neighbourhood 2", checked: false},
@@ -36,11 +37,24 @@ googleGisDemo.controller("NeighbourhoodsCtrl", function($scope) {
   		}
   	});
   	google.maps.event.addListener($scope.mapsEngineLayer, 'click', function(event) {
-  		if(shapesClicked.indexOf(event.featureId) != -1){
-
-  		}else{
-  			shapesClicked.push(event.featureId);
-  			
-  		}
+  		var url = $scope.propertiesUrl + event.featureId;
+  		var params = {
+			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+			version: "published"
+		};
+		$http({
+			method: 'GET',
+			url: url,
+			params: params
+		}).success(function(data, status, header, config){
+			var option = {
+				"strokeColor": "#380474",
+				"strokeOpacity": 1,
+				"fillColor": "#AB82FF",
+				"fillOpacity": 0.1
+			};
+			var myGoogleVector = new GeoJSON(data.geometry, option);
+			myGoogleVector.setMap($scope.map);
+		});
   	});
 });
