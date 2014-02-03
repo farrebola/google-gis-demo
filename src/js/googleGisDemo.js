@@ -4,7 +4,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http) {
 	$scope.showPanel = true;
 	$scope.results = [];
 	$scope.selectedResult = null;
-	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/17054336369362646689-16143158689603361093/features?version=published&key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&maxResults=20';
+	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/17054336369362646689-11613121305523030954/features';
 	$scope.nextPageToken = null;
 
 
@@ -20,15 +20,33 @@ googleGisDemo.controller("AppCtrl", function($scope, $http) {
 	};
 	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+	$scope.mapsEngineLayer = new google.maps.visualization.DynamicMapsEngineLayer({
+		layerId: '17054336369362646689-11613121305523030954',
+		map: $scope.map
+	});
+
 	$scope.resultClicked = function(result) {
 		// The current result is deselected.
 		if ($scope.selectedResult) {
 			$scope.selectedResult.active = false;
+			
+			$scope.selectedResult.marker.toggleBounce(false);
+			if ($scope.selectedResult.marker.popup) {
+				$scope.selectedResult.marker.popup.close();
+				
+			}
 		}
 
 		// We set the current selected result and highlight it.
 		$scope.selectedResult = result;
+		
+		result.marker.toggleBounce(true);
+		result.marker.setZIndex(1000);
 		result.active = true;
+		result.marker.showInfoWindow();
+
+		$scope.map.panTo(result.marker.position);
+
 	};
 
 	$scope.loadNextPage = function() {
@@ -36,16 +54,26 @@ googleGisDemo.controller("AppCtrl", function($scope, $http) {
 	};
 
 	$scope.doRequest = function() {
-		var url = $scope.propertiesUrl;
+		var params = {
+			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+			version: "published",
+			select: "geometry, displayable_address, agent_phone, price",
+			orderBy: "price DESC",
+			maxResults: 75,
+			limit: 75
+		};
+
 		if ($scope.nextPageToken) {
-			url += "&pageToken=" + $scope.nextPageToken;
+			params["pageToken"] = $scope.nextPageToken;
 		}
+
 		$http({
 			method: 'GET',
-			url: url
+			url: $scope.propertiesUrl,
+			params: params
 		})
 			.success(function(data, status, header, config) {
-				if (data.nextPageToken) {
+				if (data.nextPageToken &&  data.nextPageToken!=$scope.nextPageToken) {
 					$scope.nextPageToken = data.nextPageToken;
 				} else {
 					$scope.nextPageToken = null;
@@ -61,6 +89,35 @@ googleGisDemo.controller("AppCtrl", function($scope, $http) {
 						title: feature.properties.displayable_address,
 						map: $scope.map
 					});
+
+
+					marker.showInfoWindow = function() {
+						if(!this.popup) {
+							this.popup = new google.maps.InfoWindow({
+								content: "hello"
+							});							
+						}
+
+						this.popup.open($scope.map, this);
+
+					};
+
+					marker.addListener("click", function(event){
+						marker.showInfoWindow();
+					});
+
+					marker.toggleBounce = function (active) {
+						
+						if (active) {
+							this.setAnimation(google.maps.Animation.BOUNCE);
+							var m = this;
+							setTimeout(function() {
+								m.toggleBounce(false);
+							}, 2000);
+						} else {
+							this.setAnimation(null);
+						}
+					};
 
 					$scope.results.push({
 						properties: feature.properties,
