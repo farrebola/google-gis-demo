@@ -7,6 +7,7 @@
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap-slider/slider.css" rel="stylesheet" media="screen">
+
 	    <link href="css/walking_distance.css" rel="stylesheet" media="screen">
 	    <link href="css/neighbourhoods.css" rel="stylesheet" media="screen">
 	    <link href="css/app.css" rel="stylesheet" media="screen">
@@ -34,8 +35,7 @@
     	<script src="js/angularSlider.js"></script>
     	<script src="js/scroll.js"></script>
 
-    	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&sensor=false"></script>
-    	 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=drawing&sensor=false"></script>
+    	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&sensor=false&libraries=drawing,visualization"></script>    	 
 	</head>
 
 	<body ng-controller="AppCtrl">
@@ -76,14 +76,22 @@
 		
 		<div class="container-fluid">
 			<div class="row-fluid full-height">
-				<div class="col-md-4 full-height" when-scrolled="loadNextPage()">				
-				  <a href="#" class="list-group-item" ng-repeat="result in results" ng-class="{active: result.active}" ng-click="resultClicked(result)">
-				  	<h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
-				    <p class="list-group-item-text">{{result.properties.price}} € / {{result.properties.agent_phone}}</p>								    
-				  </a>
-				  <a href="#" class="list-group-item" ng-class="{hidden: !nextPageToken}">
-				  	Loading <span class="glyphicon glyphicon-refresh spin"></span>
-				  </a>
+				<div class="col-md-4 full-height" >	
+					<div class="panel panel-default full-height">
+						<div class="panel-heading">
+							Property Listing
+						</div>
+						<ul class="list-group scrollable-body" when-scrolled="loadNextPage()">
+							<a href="#" class="list-group-item" ng-repeat="result in results" ng-class="{active: result.active}" ng-click="resultClicked(result)">
+								<h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
+								<p class="list-group-item-text">{{result.properties.price}} € / {{result.properties.agent_phone}}</p>								    
+							</a>
+							<a href="#" class="list-group-item" ng-class="{hidden: !nextPageToken}">
+								  	Loading <span class="glyphicon glyphicon-refresh spin"></span>
+							</a>
+						</ul>
+					</div>
+				 
 				</div>
 				
 
