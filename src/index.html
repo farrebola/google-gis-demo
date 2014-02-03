@@ -78,17 +78,17 @@
 			<div class="row-fluid full-height">
 				<div class="col-md-4 full-height" >	
 					<div class="panel panel-default full-height">
-						<div class="panel-heading">
+						<div class="panel-heading" >
 							Property Listing
 						</div>
-						<ul class="list-group scrollable-body" when-scrolled="loadNextPage()">
-							<a href="#" class="list-group-item" ng-repeat="result in results" ng-class="{active: result.active}" ng-click="resultClicked(result)">
+						<ul class="list-group scrollable-body">
+							<a href="#" class="list-group-item" ng-repeat="result in filteredResults((results|orderBy:'-properties.price'|filter:filter))" ng-class="{active: result.active}" ng-click="resultClicked(result)">
 								<h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
 								<p class="list-group-item-text">{{result.properties.price}} € / {{result.properties.agent_phone}}</p>								    
 							</a>
-							<a href="#" class="list-group-item" ng-class="{hidden: !nextPageToken}">
+							<!--a href="#" class="list-group-item"  when-scrolled="loadNextPage()"  ng-class="{'hidden': !nextPageToken}">
 								  	Loading <span class="glyphicon glyphicon-refresh spin"></span>
-							</a>
+							</a-->
 						</ul>
 					</div>
 				 
