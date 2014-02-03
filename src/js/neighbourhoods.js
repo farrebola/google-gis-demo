@@ -19,17 +19,43 @@ googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
 			$scope.mapsEngineLayer.setMap($scope.map);
 		}else{
 			$scope.mapsEngineLayer.setMap(null);
+			if(shapesClicked.length != 0){
+				for(var i=0; i<shapesClicked.length; i++){
+					handlerShape(shapesClicked[i].geometry, null);
+				}
+				shapesClicked = [];
+			}
 		}
 	};
 
 	var shapesClicked = [];
 
+	var indexShapeClicked = function(shapeId){
+		var index = -1;
+		for (var i=0; i<shapesClicked.length; i++){
+			if(shapesClicked[i].featureId == shapeId){
+				index = i;
+			}
+		}
+		return index;
+	}
+	var handlerShape = function(shape, action){
+		if (Array.isArray(shape)){
+			for(var i=0; i<shape.length; i++){
+				shape[i].setMap(action);
+			}
+		}else{
+			shape.setMap(action);
+		}
+	};
  	google.maps.event.addListener($scope.mapsEngineLayer, 'mouseover', function(event) {
-    	var style = $scope.mapsEngineLayer.getFeatureStyle(event.featureId);
-    	style.strokeColor = "#380474";
-    	style.fillColor = "#AB82FF";
-    	style.fillOpacity = '0.1';
-    	style.strokeOpacity = '1';
+    	if(indexShapeClicked(event.featureId) == -1){
+  			var style = $scope.mapsEngineLayer.getFeatureStyle(event.featureId);
+    		style.strokeColor = "#380474";
+    		style.fillColor = "#AB82FF";
+    		style.fillOpacity = '0.1';
+    		style.strokeOpacity = '1';
+  		}
   	});
   	google.maps.event.addListener($scope.mapsEngineLayer, 'mouseout', function(event) {
   		if(!$scope.clickOnShape){
@@ -37,24 +63,35 @@ googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
   		}
   	});
   	google.maps.event.addListener($scope.mapsEngineLayer, 'click', function(event) {
-  		var url = $scope.propertiesUrl + event.featureId;
-  		var params = {
-			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
-			version: "published"
-		};
-		$http({
-			method: 'GET',
-			url: url,
-			params: params
-		}).success(function(data, status, header, config){
-			var option = {
-				"strokeColor": "#380474",
-				"strokeOpacity": 1,
-				"fillColor": "#AB82FF",
-				"fillOpacity": 0.1
+  		if(indexShapeClicked(event.featureId) != -1){
+  			// Handler another click event
+  			handlerShape(shapesClicked[indexShapeClicked(event.featureId)].geometry, null);
+  			shapesClicked.splice(indexShapeClicked(event.featureId), 1);
+  		}else{
+  			var url = $scope.propertiesUrl + event.featureId;
+  			var params = {
+				key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+				version: "published"
 			};
-			var myGoogleVector = new GeoJSON(data.geometry, option);
-			myGoogleVector.setMap($scope.map);
-		});
+			$http({
+				method: 'GET',
+				url: url,
+				params: params
+			}).success(function(data, status, header, config){
+				var option = {
+					"strokeColor": "#380474",
+					"strokeOpacity": 1,
+					"fillColor": "#AB82FF",
+					"fillOpacity": 0.1
+				};
+				var myGoogleVector = new GeoJSON(data.geometry, option);
+				shapesClicked.push({
+					featureId: data.properties.gx_id, 
+					geometry: myGoogleVector
+				});
+				handlerShape(myGoogleVector, $scope.map);
+			});
+  		}
+  		
   	});
 });
