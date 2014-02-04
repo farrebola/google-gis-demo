@@ -8,7 +8,7 @@
 					Show neighbourhoods outline
             	</label>
 			</p>
-			<div class="panel panel-primary">
+			<div class="panel panel-primary neighbourhoods-panel">
 				<div class="panel-heading">
 					Selected neighbourhoods 
 				</div>
@@ -16,7 +16,7 @@
 					<ul class="checkbox-list col-md-12">
         			<li ng-repeat="neighbourhoodName in neighbourhoodsNames">
                         <label class="checkbox">
-                            <input type="checkbox" ng-model="neighbourhoodName.checked">
+                            <input type="checkbox" ng-model="neighbourhoodName.checked" ng-change="check(neighbourhoodName.id)">
                             {{neighbourhoodName.label}}
                         </label>
                     </li>
