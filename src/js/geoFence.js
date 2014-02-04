@@ -133,7 +133,7 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 
 	$scope.clearAll = function(el) {
 		
-		angular.forEach($scope.toolFilter, function(feature){
+		angular.forEach($scope.toolFilter.geometries, function(feature){
 			feature.setMap(null);
 			google.maps.event.trigger(feature, 'remove');	
 		});
