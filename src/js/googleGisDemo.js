@@ -2,12 +2,27 @@ var googleGisDemo = angular.module("googleGisDemo", ["scroll"]);
 
 googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.showPanel = true;
+	
+	/**
+	 * The results as are received from the request api.
+	 */
 	$scope.results = [];
+
+	/**
+	 * The results that comply with the geo filters.
+	 */
+	$scope.geoFilteredResults = [];
+
+	/**
+	 * The geometries used to filter the results.
+	 */
+	$scope.geometryFilters ={};
+
 	$scope.selectedResult = null;
 	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/17054336369362646689-11613121305523030954/features';
 	$scope.nextPageToken = null;
-	$scope.geometryFilters ={};
 
+	$scope.filterIntersectionMode = true;
 
 	$scope.statusLabels = {
 		for_sale: "For Sale",
@@ -26,13 +41,126 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		map: $scope.map
 	});
 
+	/**
+	 * Watches for changes in the filters (done by the filter tool controllers)
+ 	 * add apply the filters on the results.
+ 	 */ 
+	$scope.$watch("geometryFilters", function() {
+		$scope.applyGeoFilters();
+	});
+
+
+	$scope.applyGeoFilters = function() {
+		var filtered = [];
+
+		angular.forEach($scope.results, function(result) {
+			if($scope.checkGeoFilters(result)) {
+				filtered.push(result);
+			}
+		});
+
+
+		$scope.geoFilteredResults = filtered;		
+	};
+
+	$scope.checkGeoFilters = function(feature) {
+		for(var toolFilterKey in $scope.geometryFilters) {
+			var result = $scope.checkToolFilter(feature, $scope.geometryFilters[toolFilterKey]);
+
+			if(!result && $scope.filterIntersectionMode) {
+				// If we are intersecting filter results from the tools filters,
+				// the first failure means the feature won't be in the result set.
+				return false;
+			} else if (result && !$scope.filterIntersectionMode) {
+				// If we are making an union of the tools' filters result,
+				// the first time we have a positive we will incluide the feature in the result set.
+				return true;
+			} 
+		}
+
+		// If we have reached the end without going out before, then we mean we have all successes if
+		// intersecting, or all failures if making the union.
+		if($scope.filterIntersectionMode) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	$scope.checkToolFilter = function(feature, geometries) {
+		
+		if(!geometries.length) {
+			return true;
+		}
+		
+		var latLng = new google.maps.LatLng(feature.geometry.coordinates[1],feature.geometry.coordinates[0]);
+		for(var i = 0; i < geometries.length; i++) {
+			if(!geometries[i]) {
+				continue;
+			}
+
+			if(google.maps.geometry.poly.containsLocation(latLng, geometries[i])) {
+				return true;
+			}
+		}
+		
+		return false;
+	};
+
+	/**
+	 * Adds an entry in the geometyFilter watched array for a tool so it can add geometries for use
+	 * for filtering.
+	 */ 
+	$scope.registerGeometryFilter = function(filterToolId) {
+		var toolFilter = [];
+		$scope.geometryFilters[filterToolId] = toolFilter;
+
+
+		toolFilter.add = function(feature) {
+			toolFilter.push(feature);			
+			$scope.applyGeoFilters();				
+		};
+
+		toolFilter.update = function(feature) {
+			this.remove(feature);
+			this.add(feature);			
+			$scope.applyGeoFilters();				
+		};
+
+		toolFilter.remove = function(feature) {
+			var index = this.indexOf(feature);
+			toolFilter.splice(index,1);	
+			$scope.applyGeoFilters();				
+		};
+
+		toolFilter.clear = function() {
+			toolFilter.splice(0, toolFilter.length);					
+			$scope.applyGeoFilters();			
+		}
+
+		return toolFilter;
+	};
+
+	$scope.$watchCollection("geoFilteredResults", function() {
+		$scope.addMarkersToMap();
+	});
 	
 	/**
 	 * This function intercepts the filtered results and create markers form them.
 	 */
-	$scope.filteredResults = function(filteredResults) {
+	$scope.addMarkersToMap = function() {
 		
-		angular.forEach(filteredResults, function(result) {
+		
+		if($scope.map._markers) {
+			angular.forEach($scope.map._markers, function(oldmarker) {
+				oldmarker.setMap(null);
+				oldmarker = null;
+			})	
+		}
+		
+		$scope.map._markers = [];
+		
+		angular.forEach($scope.geoFilteredResults, function(result) {
 			var marker = new google.maps.Marker({
 				position: {
 					lat: result.geometry.coordinates[1],
@@ -49,9 +177,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 						content: "hello"
 					});							
 				}
-
 				this.popup.open($scope.map, this);
-
 			};
 
 			marker.addListener("click", function(event){
@@ -70,9 +196,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 					this.setAnimation(null);
 				}
 			};
-		})
 			
-		return filteredResults;
+			$scope.map._markers.push(marker);
+		});
 	};
 
 	$scope.resultClicked = function(result) {
@@ -137,6 +263,8 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 						id: feature.properties.listing_id
 					});
 				});
+
+				$scope.applyGeoFilters();
 			})
 			.error(function(data, status, headers, errors) {
 				//alert("error!");

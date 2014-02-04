@@ -26,6 +26,7 @@
          plugins que utilices) -->
     	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     	<script src="../bower_components/bootstrap-slider/bootstrap-slider.js"></script>
+    	<script src="../bower_components/geoJSON-to-Google-Maps/GeoJSON.js"></script>
     	<script src="../bower_components/angular/angular.js"></script>
     	
     	<script src="js/googleGisDemo.js"></script>
@@ -35,7 +36,7 @@
     	<script src="js/angularSlider.js"></script>
     	<script src="js/scroll.js"></script>
 
-    	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&sensor=false&libraries=drawing,visualization"></script>    	 
+    	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&sensor=false&libraries=drawing,visualization,geometry"></script>    	 
 	</head>
 
 	<body ng-controller="AppCtrl">
@@ -78,17 +79,21 @@
 			<div class="row-fluid full-height">
 				<div class="col-md-4 full-height" >	
 					<div class="panel panel-default full-height">
-						<div class="panel-heading" >
+						<div class="panel-heading">
 							Property Listing
 						</div>
 						<ul class="list-group scrollable-body">
-							<a href="#" class="list-group-item" ng-repeat="result in filteredResults((results|orderBy:'-properties.price'|filter:filter))" ng-class="{active: result.active}" ng-click="resultClicked(result)">
+							<a href="#" class="list-group-item" ng-repeat="result in geoFilteredResults|orderBy:'-properties.price'|filter:filter" ng-class="{active: result.active}" ng-click="resultClicked(result)">
 								<h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
 								<p class="list-group-item-text">{{result.properties.price}} € / {{result.properties.agent_phone}}</p>								    
 							</a>
-							<!--a href="#" class="list-group-item"  when-scrolled="loadNextPage()"  ng-class="{'hidden': !nextPageToken}">
+							<a href="#" class="list-group-item" ng-class="{hidden: !nextPageToken}">
 								  	Loading <span class="glyphicon glyphicon-refresh spin"></span>
 							</a-->
+
+							<a href="#" class="list-group-item"  ng-class="{'hidden': '!!geoFilteredResults.length'}">
+								  	<span class="glyphicon glyphicon-info-sign"></span> No results, please change the filter!
+							</a>
 						</ul>
 					</div>
 				 
