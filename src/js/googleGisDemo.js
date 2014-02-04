@@ -117,8 +117,13 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			if(!geometries[i]) {
 				continue;
 			}
-
-			if(google.maps.geometry.poly.containsLocation(latLng, geometries[i])) {
+			
+			// We handle multipolygons with recursion.
+			if(angular.isArray(geometries[i])) {
+				if($scope.checkToolFilter(feature, geometries[i])) {				
+					return true;				
+				}
+			} else if(google.maps.geometry.poly.containsLocation(latLng, geometries[i])) {
 				return true;
 			}
 		}
