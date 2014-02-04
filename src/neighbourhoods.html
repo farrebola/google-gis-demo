@@ -1,5 +1,6 @@
 <li class="neighbourhoods dropdown" ng-controller="NeighbourhoodsCtrl">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neighbourhoods <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Neighbourhoods
+		<span class="badge" ng-class="{'hidden': !toolFilter.hasResults}">{{toolFilter.featuresMatching}}</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<form>
 			<p>
@@ -14,7 +15,7 @@
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li ng-repeat="neighbourhoodName in neighbourhoodsNames">
+        			<li ng-repeat="neighbourhoodName in neighbourhoodsNames | orderBy: 'label'">
                         <label class="checkbox">
                             <input type="checkbox" ng-model="neighbourhoodName.checked" ng-change="check(neighbourhoodName.id)">
                             {{neighbourhoodName.label}}
