@@ -2,6 +2,9 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 	$scope.resultsFound = "";
 	$scope.active = false;
 
+
+	$scope.toolFilter = $scope.registerGeometryFilter("GeoFenceCtrl");
+
 	var featureOnAir = null;
 
 	var drawingManager = new google.maps.drawing.DrawingManager({
@@ -46,10 +49,18 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 		}
 	};
 	$scope.removeArea = function(el) {
-		featureOnAir.setMap(null);
-		google.maps.event.trigger(featureOnAir, 'remove');
+		
+		$scope.removeFeature(featureOnAir);
+		
 	};
-	var arrayFeatures = [];
+	
+	$scope.removeFeature = function(feature) {
+		feature.setMap(null);
+		google.maps.event.trigger(feature, 'remove');	
+
+		$scope.toolFilter.remove(feature);		
+	};
+	
 	var contentHtml =
 		'<div class="btn-group btn-group-justified">' +
 		'<a role="button" class="btn btn-default" ng-click="editArea()" ng-class="{active:drawing}"><span class="glyphicon glyphicon-pencil"></span></a>' +
@@ -88,11 +99,32 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 				var center = bounds.getCenter();
 				infowindow.setPosition(center);
 				infowindow.open($scope.map);
+
+				$scope.$apply(function() {
+					$scope.toolFilter.update(feature);					
+				});				
 			});
+			
+			google.maps.event.addListener(feature.getPath(), 'insert_at', function(index, obj) {
+           		$scope.toolFilter.update(feature);
+			});
+			google.maps.event.addListener(feature.getPath(), 'set_at', function(index, obj) {
+				if(feature.editable){
+					$scope.$apply(function() {
+						$scope.toolFilter.update(feature);	
+					});
+				}
+				
+			});
+			
 			google.maps.event.addListener(feature, 'remove', function(evt) {
 				infowindow.close($scope.map);
 			});
-			arrayFeatures.push(feature);
+			
+			$scope.$apply(function() {
+				$scope.toolFilter.add(feature);				
+			});
+			
 		}
 	});
 	google.maps.event.addListener($scope.map, 'click', function(event) {
@@ -100,10 +132,13 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 	});
 
 	$scope.clearAll = function(el) {
-		for (var i = 0; i < arrayFeatures.length; i++) {
-			arrayFeatures[i].setMap(null);
-		};
-		arrayFeatures = [];
-		infowindow.close($scope.map);
+		
+		angular.forEach($scope.toolFilter, function(feature){
+			feature.setMap(null);
+			google.maps.event.trigger(feature, 'remove');	
+		});
+
+		$scope.toolFilter.clear();
+		
 	};
 });
