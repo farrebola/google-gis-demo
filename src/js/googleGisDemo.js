@@ -53,11 +53,23 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.applyGeoFilters = function() {
 		var filtered = [];
 
+		// We initialize the carets of the tools.
+		for(var toolFilterKey in $scope.geometryFilters) {			
+			var toolFilter = $scope.geometryFilters[toolFilterKey];
+			toolFilter.featuresMatching = 0;
+		}
+
+
 		angular.forEach($scope.results, function(result) {
 			if($scope.checkGeoFilters(result)) {
 				filtered.push(result);
 			}
 		});
+
+		for(var toolFilterKey in $scope.geometryFilters) {			
+			var toolFilter = $scope.geometryFilters[toolFilterKey];
+			toolFilter.hasResults = toolFilter.featuresMatching>0;
+		}
 
 
 		$scope.geoFilteredResults = filtered;		
@@ -65,7 +77,14 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 	$scope.checkGeoFilters = function(feature) {
 		for(var toolFilterKey in $scope.geometryFilters) {
-			var result = $scope.checkToolFilter(feature, $scope.geometryFilters[toolFilterKey]);
+			var toolFilter = $scope.geometryFilters[toolFilterKey];
+			var result = $scope.checkToolFilter(feature, toolFilter.geometries);
+
+			// We only count the feature as matched by the tool's filter if it must
+			// be included and the filter included geometries (no it's not a match by default)
+			if(result && toolFilter.geometries.length) {
+				toolFilter.featuresMatching++;
+			}
 
 			if(!result && $scope.filterIntersectionMode) {
 				// If we are intersecting filter results from the tools filters,
@@ -92,14 +111,19 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		if(!geometries.length) {
 			return true;
 		}
-		
+
 		var latLng = new google.maps.LatLng(feature.geometry.coordinates[1],feature.geometry.coordinates[0]);
 		for(var i = 0; i < geometries.length; i++) {
 			if(!geometries[i]) {
 				continue;
 			}
-
-			if(google.maps.geometry.poly.containsLocation(latLng, geometries[i])) {
+			
+			// We handle multipolygons with recursion.
+			if(angular.isArray(geometries[i])) {
+				if($scope.checkToolFilter(feature, geometries[i])) {				
+					return true;				
+				}
+			} else if(google.maps.geometry.poly.containsLocation(latLng, geometries[i])) {
 				return true;
 			}
 		}
@@ -112,31 +136,36 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	 * for filtering.
 	 */ 
 	$scope.registerGeometryFilter = function(filterToolId) {
-		var toolFilter = [];
+		var toolFilter = {
+			geometries: [], 
+			featuresMatching:0,
+			hasResults: false
+		};
+
 		$scope.geometryFilters[filterToolId] = toolFilter;
 
 
 		toolFilter.add = function(feature) {
-			toolFilter.push(feature);			
+			toolFilter.geometries.push(feature);			
 			$scope.applyGeoFilters();				
 		};
 
 		toolFilter.update = function(feature) {
-			this.remove(feature);
-			this.add(feature);			
+			toolFilter.remove(feature);
+			toolFilter.add(feature);			
 			$scope.applyGeoFilters();				
 		};
 
 		toolFilter.remove = function(feature) {
-			var index = this.indexOf(feature);
-			toolFilter.splice(index,1);	
+			var index = toolFilter.geometries.indexOf(feature);
+			toolFilter.geometries.splice(index,1);	
 			$scope.applyGeoFilters();				
 		};
 
 		toolFilter.clear = function() {
-			toolFilter.splice(0, toolFilter.length);					
+			toolFilter.geometries.splice(0, toolFilter.geometries.length);					
 			$scope.applyGeoFilters();			
-		}
+		};
 
 		return toolFilter;
 	};
@@ -233,7 +262,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		var params = {
 			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
 			version: "published",
-			//maxResults: 75,
+			maxResults: 1000,
 			limit: 1000,
 			//orderBy: "price DESC",
 			//select: "geometry, displayable_address, agent_phone, price",
