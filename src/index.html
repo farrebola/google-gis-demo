@@ -3,6 +3,7 @@
 	<head>
 		<title>Google GIS Demo App</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
 		 <!-- CSS de Bootstrap -->
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
@@ -28,13 +29,14 @@
     	<script src="../bower_components/bootstrap-slider/bootstrap-slider.js"></script>
     	<script src="../bower_components/geoJSON-to-Google-Maps/GeoJSON.js"></script>
     	<script src="../bower_components/angular/angular.js"></script>
-    	
+    	<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     	<script src="js/googleGisDemo.js"></script>
     	<script src="js/walkingDistance.js"></script>
     	<script src="js/neighbourhoods.js"></script>
     	<script src="js/geoFence.js"></script>
     	<script src="js/angularSlider.js"></script>
     	<script src="js/scroll.js"></script>
+    	<script src="js/searchbar.js"></script>
 
     	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k&sensor=false&libraries=drawing,visualization,geometry"></script>    	 
 	</head>
@@ -62,7 +64,7 @@
 			    <ul class="nav navbar-nav navbar-right">
 			      <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-			        <ul class="dropdown-menu">
+			        <ul class="dropdown-menu topbar">
 			          <li><a href="#">Action</a></li>
 			          <li><a href="#">Another action</a></li>
 			          <li><a href="#">Something else here</a></li>
@@ -98,9 +100,11 @@
 					</div>
 				 
 				</div>
-				
 
 				<div class="col-md-8 full-height ">
+					<div class="input-group" ng-controller="searchbarCtrl" style="display:none">
+      					<input type="text" class="form-control" ng-model="selected" placeholder="Buscar localización..." typeahead="address for address in getLocation($viewValue) | filter:$viewValue">
+    				</div>
 					<div id="map" class="full-height well"></div>
 				</div>
 			</div>

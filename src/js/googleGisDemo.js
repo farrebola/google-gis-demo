@@ -1,4 +1,4 @@
-var googleGisDemo = angular.module("googleGisDemo", ["scroll"]);
+var googleGisDemo = angular.module("googleGisDemo", ["scroll", "ui.bootstrap"]);
 
 googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.showPanel = true;
