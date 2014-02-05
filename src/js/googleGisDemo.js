@@ -146,7 +146,14 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 
 		toolFilter.add = function(feature) {
-			toolFilter.geometries.push(feature);			
+			if(!angular.isArray(feature)) {
+				feature = [feature];
+			}
+		
+			for(var i=0; i<feature.length; i++) {
+				toolFilter.geometries.push(feature[i]);
+			}
+			
 			$scope.applyGeoFilters();				
 		};
 
@@ -157,8 +164,15 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		};
 
 		toolFilter.remove = function(feature) {
-			var index = toolFilter.geometries.indexOf(feature);
-			toolFilter.geometries.splice(index,1);	
+			if(!angular.isArray(feature)) {
+				feature = [features];
+			}
+			
+			for(var i=0; i < feature.length; i++) {
+				var index = toolFilter.geometries.indexOf(feature);
+				toolFilter.geometries.splice(index,1);		
+			}
+			
 			$scope.applyGeoFilters();				
 		};
 
@@ -263,7 +277,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
 			version: "published",
 			maxResults: 1000,
-			limit: 1000,
+			limit: 1000
 			//orderBy: "price DESC",
 			//select: "geometry, displayable_address, agent_phone, price",
 			//where: "price>10" // This doesn't seem to work.
