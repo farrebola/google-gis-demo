@@ -100,7 +100,7 @@
 
 				<div class="col-md-8 full-height ">
 					<div class="input-group" ng-controller="searchbarCtrl" style="display:none">
-      					<input type="text" class="form-control" ng-model="selected" placeholder="Buscar localización..." typeahead="address for address in getLocation($viewValue) | filter:$viewValue">
+      					<input type="text" class="form-control" ng-model="selected" placeholder="Location ..." typeahead="address.formatted_address for address in getLocation($viewValue) | filter:$viewValue" typeahead-on-select="select($item)">
     				</div>
 					<div id="map" class="full-height well"></div>
 				</div>
