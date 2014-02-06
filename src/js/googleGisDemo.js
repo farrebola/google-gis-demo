@@ -76,6 +76,14 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	};
 
 	$scope.checkGeoFilters = function(feature) {
+		// If we are intersecting results, the default value is true, as we must "prove" that
+		// that at least one filter doesn't match it to keep the result out; if we are uniting,
+		// the default value is false as we must prove that a least one filter includes the result.
+		var finalResult = $scope.filterIntersectionMode
+		
+		
+		// We apply all filters instead of performing a lazy evaluation (which would be more efficient)
+		// as we want to calculate, for each tool, the number of features that match each specific filter.
 		for(var toolFilterKey in $scope.geometryFilters) {
 			var toolFilter = $scope.geometryFilters[toolFilterKey];
 			var result = $scope.checkToolFilter(feature, toolFilter.geometries);
@@ -85,25 +93,15 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			if(result && toolFilter.geometries.length) {
 				toolFilter.featuresMatching++;
 			}
-
-			if(!result && $scope.filterIntersectionMode) {
-				// If we are intersecting filter results from the tools filters,
-				// the first failure means the feature won't be in the result set.
-				return false;
-			} else if (result && !$scope.filterIntersectionMode) {
-				// If we are making an union of the tools' filters result,
-				// the first time we have a positive we will incluide the feature in the result set.
-				return true;
-			} 
+			
+			if($scope.filterIntersectionMode) {
+				finalResult = finalResult && result;
+			} else {
+				finalResult = finalResult || result;
+			}
 		}
 
-		// If we have reached the end without going out before, then we mean we have all successes if
-		// intersecting, or all failures if making the union.
-		if($scope.filterIntersectionMode) {
-			return true;
-		} else {
-			return false;
-		}
+		return finalResult;
 	};
 
 	$scope.checkToolFilter = function(feature, geometries) {
