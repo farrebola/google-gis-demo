@@ -15,8 +15,7 @@
     "branch": "master",
     "commit": "adf0ea235d130abeb8b835de899990e056c11436"
   },
-  "_source": "https://github.com/JasonSanford/geojson-google-maps.git",
+  "_source": "git://github.com/JasonSanford/geojson-google-maps.git",
   "_target": "*",
-  "_originalSource": "git://github.com/JasonSanford/geojson-google-maps.git",
-  "_direct": true
+  "_originalSource": "git://github.com/JasonSanford/geojson-google-maps.git"
 }
