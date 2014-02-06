@@ -21,7 +21,7 @@
 	overflow: auto;
 }
 
-.dropdown-menu {
+.topbar {
 	width: 300px;
 	padding: 20px 20px 10px 20px;
 }
@@ -78,4 +78,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.input-group {
+  margin-top: 20px;
+  min-width: 500px;
 }

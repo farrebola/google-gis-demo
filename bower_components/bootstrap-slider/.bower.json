@@ -27,8 +27,7 @@
     "branch": "master",
     "commit": "879a98dcd0923107363861e56423f3cc1c2472e7"
   },
-  "_source": "https://github.com/pammacdotnet/bootstrap-slider.git",
+  "_source": "git://github.com/pammacdotnet/bootstrap-slider.git",
   "_target": "*",
-  "_originalSource": "git://github.com/pammacdotnet/bootstrap-slider",
-  "_direct": true
+  "_originalSource": "git://github.com/pammacdotnet/bootstrap-slider"
 }
