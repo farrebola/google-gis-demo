@@ -56,9 +56,24 @@
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			    <ul class="nav navbar-nav" ng-include="'walking_distance.html'"></ul>
-			    <ul class="nav navbar-nav" ng-include="'neighbourhoods.html'"></ul>
-			    <ul class="nav navbar-nav" ng-include="'geofence.html'"></ul>
+			
+				<form class="nav navbar-left navbar-form form-inline">
+					<div class="btn-group">
+						<select class="form-control btn btn-default" ng-model="filterIntersectionMode" ng-change="applyGeoFilters()"
+							ng-options="o.intersection as o.label for o in filterCombinationModes">                          
+                        </select>
+						
+						<ng-include src="'walking_distance.html'" class="btn-group"></ng-include>
+						<ng-include src="'neighbourhoods.html'" class="btn-group"></ng-include>
+			    		<ng-include src="'geofence.html'" class="btn-group"></ng-include>
+						
+						<button type="button" class="btn btn-default" ng-disabled="!geometryFilterCount">
+							<span class="glyphicon glyphicon-remove"></span>
+						 	<span class="sr-only">Remove all filters</span>
+						</button>
+					</div>
+				</form>
+				
 			    <ul class="nav navbar-nav navbar-right">
 			      <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>

@@ -1,5 +1,5 @@
-<li class="geoFence dropdown" ng-controller="GeoFenceCtrl">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown">GeoFence 
+<div class="btn-group geoFence dropdown" ng-controller="GeoFenceCtrl">
+	<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">GeoFence 
 		<span class="badge" ng-class="{'hidden': !toolFilter.hasResults}">{{toolFilter.featuresMatching}}</span> <b class="caret"></b></a>
 	<div class="dropdown-menu">
 		<p class="btn-group btn-group-justified">
@@ -10,4 +10,4 @@
 			<a role="button" class="btn btn-default" ng-class="{active:active}" ng-click="drawArea()">Draw Filter Area</a>
 		</p>
 	</div>
-</li>
+</div>
