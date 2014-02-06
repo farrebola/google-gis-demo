@@ -17,9 +17,9 @@
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li ng-repeat="tubeLine in tubeLines">
+        			<li ng-repeat="tubeLine in tubeLines | orderBy: 'label'">
             			<label class="checkbox">
-                			<input type="checkbox" ng-model="tubeLine.checked">
+                			<input type="checkbox" ng-model="tubeLine.checked" ng-change="check(tubeLine)">
                 			{{tubeLine.label}}
             			</label>
         			</li>
