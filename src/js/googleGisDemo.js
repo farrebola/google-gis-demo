@@ -3,6 +3,8 @@ var googleGisDemo = angular.module("googleGisDemo", ["scroll", "ui.bootstrap"]);
 googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.showPanel = true;
 	
+	$loading = false;
+	
 	/**
 	 * The results as are received from the request api.
 	 */
@@ -17,12 +19,23 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	 * The geometries used to filter the results.
 	 */
 	$scope.geometryFilters ={};
+	$scope.geometryFilterCount = 0;
 
 	$scope.selectedResult = null;
 	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/17054336369362646689-11613121305523030954/features';
 	$scope.nextPageToken = null;
 
 	$scope.filterIntersectionMode = true;
+	
+	$scope.filterCombinationModes = [
+		{
+			label: "Match all",
+			intersection: true
+		}, {
+			label: "Match any",
+			intersection: false
+		}
+	];
 
 	$scope.statusLabels = {
 		for_sale: "For Sale",
@@ -96,7 +109,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			
 			if($scope.filterIntersectionMode) {
 				finalResult = finalResult && result;
-			} else {
+			} else if(toolFilter.geometries.length) {
+				// If we are uniting features, we don't wanna add all features if 
+				// a tool doesn't provide geometries.
 				finalResult = finalResult || result;
 			}
 		}
@@ -150,6 +165,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		
 			for(var i=0; i<feature.length; i++) {
 				toolFilter.geometries.push(feature[i]);
+				$scope.geometryFilterCount++;
 			}
 			
 			$scope.applyGeoFilters();				
@@ -163,12 +179,13 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 		toolFilter.remove = function(feature) {
 			if(!angular.isArray(feature)) {
-				feature = [features];
+				feature = [feature];
 			}
 			
 			for(var i=0; i < feature.length; i++) {
 				var index = toolFilter.geometries.indexOf(feature);
 				toolFilter.geometries.splice(index,1);		
+				$scope.geometryFilterCount--;
 			}
 			
 			$scope.applyGeoFilters();				
@@ -176,7 +193,8 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 		toolFilter.clear = function() {
 			toolFilter.geometries.splice(0, toolFilter.geometries.length);					
-			$scope.applyGeoFilters();			
+			$scope.applyGeoFilters();	
+			$scope.geometryFilterCount=0;
 		};
 
 		return toolFilter;
@@ -271,6 +289,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	};
 
 	$scope.doRequest = function() {
+		
+		$scope.loading = true;
+		
 		var params = {
 			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
 			version: "published",
@@ -291,6 +312,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			params: params
 		})
 			.success(function(data, status, header, config) {
+				
+				$scope.loading = false;
+				
 				if (data.nextPageToken &&  data.nextPageToken!=$scope.nextPageToken) {
 					$scope.nextPageToken = data.nextPageToken;
 				} else {
@@ -308,6 +332,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				$scope.applyGeoFilters();
 			})
 			.error(function(data, status, headers, errors) {
+				$scope.loading = false;
 				//alert("error!");
 				console.log(data);
 			});
