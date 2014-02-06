@@ -3,7 +3,7 @@
   "dependencies": {
     "angular": "git://github.com/angular/bower-angular.git#~1.2.10",
     "bootstrap-slider": "git://github.com/pammacdotnet/bootstrap-slider#*",
-    "bootstrap": "bootstrap#~3.0.3",
+    "bootstrap": "bootstrap#~3.1.0",
     "geoJSON-to-Google-Maps": "git://github.com/JasonSanford/geojson-google-maps.git#*",
     "angular-bootstrap": "angular-bootstrap#~0.10.0"
   },
