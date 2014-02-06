@@ -3,6 +3,7 @@ var googleGisDemo = angular.module("googleGisDemo", ["scroll"]);
 googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.showPanel = true;
 	
+	$loading = false;
 	/**
 	 * The results as are received from the request api.
 	 */
@@ -271,6 +272,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	};
 
 	$scope.doRequest = function() {
+		
+		$scope.loading = true;
+		
 		var params = {
 			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
 			version: "published",
@@ -291,6 +295,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			params: params
 		})
 			.success(function(data, status, header, config) {
+				
+				$scope.loading = false;
+				
 				if (data.nextPageToken &&  data.nextPageToken!=$scope.nextPageToken) {
 					$scope.nextPageToken = data.nextPageToken;
 				} else {
@@ -308,6 +315,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				$scope.applyGeoFilters();
 			})
 			.error(function(data, status, headers, errors) {
+				$scope.loading = false;
 				//alert("error!");
 				console.log(data);
 			});

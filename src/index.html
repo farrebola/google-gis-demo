@@ -83,12 +83,19 @@
 							Property Listing  <span class="badge" ng-class="{hidden: !geoFilteredResults.length}">{{geoFilteredResults.length}}</span>
 						</div>
 						<ul class="list-group scrollable-body">
+						
+							<a href="#" class="list-group-item text-center"  ng-class="{hidden: !loading}">
+								  	Loading <span class="glyphicon glyphicon-refresh spin"></span> 
+							</a>
+							
 							<a href="#" class="list-group-item" ng-repeat="result in geoFilteredResults|orderBy:'-properties.price'|filter:filter" ng-class="{active: result.active}" ng-click="resultClicked(result)">
 								<h4 class="list-group-item-heading">{{result.properties.displayable_address}}: {{statusLabels[result.properties.status]}}</h4>
-								<p class="list-group-item-text">{{result.properties.price}} € - {{result.properties.agent_phone}}</p>								    
+								<p class="list-group-item-text">{{result.properties.price | number}} &pound; | {{result.properties.agent_phone}}</p>								    
 							</a>
+							
+						
 
-							<a href="#" class="list-group-item text-center"  ng-class="{hidden: geoFilteredResults.length}">
+							<a href="#" class="list-group-item text-center"  ng-class="{'hidden': geoFilteredResults.length || loading}">
 								  	<span class="glyphicon glyphicon-info-sign"></span> No results, please change the filter!
 							</a>
 						</ul>
