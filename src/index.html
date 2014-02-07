@@ -69,7 +69,8 @@
 						<ng-include src="'neighbourhoods.html'" class="btn-group"></ng-include>
 			    		<ng-include src="'geofence.html'" class="btn-group"></ng-include>
 						
-						<button type="button" class="btn btn-default" ng-disabled="!geometryFilterCount">
+						<button type="button" class="btn btn-default" ng-disabled="!geometryFilterCount"
+							ng-click="clearAllToolFilters()">
 							<span class="glyphicon glyphicon-remove"></span>
 						 	<span class="sr-only">Remove all filters</span>
 						</button>

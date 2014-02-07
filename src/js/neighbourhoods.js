@@ -1,7 +1,5 @@
 googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
 	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/01048493643384141193-17488941626782682984/features';
-	$scope.toolFilter = $scope.registerGeometryFilter("NeighbourhoodsCtrl");
-
 	$scope.clickOnShape = false;
 	$scope.allNeighbourhoodsOn = false;
 	
@@ -155,6 +153,16 @@ googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
 			$scope.neighbourhoodsNames[index].checked = false;
 		}
 	};
+	
+	$scope.clearAllCallback = function() {
+		angular.forEach($scope.neighbourhoodsNames, function(nbhd) {
+			nbhd.checked = false;
+			$scope.check(nbhd.id);
+		});
+	};
+	
+	
+	$scope.toolFilter = $scope.registerGeometryFilter("NeighbourhoodsCtrl", $scope.clearAllCallback);
 
   	// Initialize neighbourhoods name checkbox
   	$scope.getNeighbourhoods();
