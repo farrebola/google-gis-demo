@@ -2,9 +2,6 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 	$scope.resultsFound = "";
 	$scope.active = false;
 
-
-	$scope.toolFilter = $scope.registerGeometryFilter("GeoFenceCtrl");
-
 	var featureOnAir = null;
 
 	var drawingManager = new google.maps.drawing.DrawingManager({
@@ -132,13 +129,15 @@ googleGisDemo.controller("GeoFenceCtrl", function($scope, $compile) {
 	});
 
 	$scope.clearAll = function(el) {
-		
+		$scope.toolFilter.clear();
+	};
+	
+	$scope.clearAllCallback = function() {
 		angular.forEach($scope.toolFilter.geometries, function(feature){
 			feature.setMap(null);
 			google.maps.event.trigger(feature, 'remove');	
 		});
-
-		$scope.toolFilter.clear();
-		
 	};
+	
+	$scope.toolFilter = $scope.registerGeometryFilter("GeoFenceCtrl", $scope.clearAllCallback);
 });

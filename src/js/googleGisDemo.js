@@ -87,6 +87,17 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 		$scope.geoFilteredResults = filtered;		
 	};
+	
+	/**
+	 * Clears all filters. 
+	 */
+	$scope.clearAllToolFilters = function () {
+		for(var filterToolId in $scope.geometryFilters) {
+			var filterTool = $scope.geometryFilters[filterToolId];
+			
+			filterTool.clear();
+		}
+	};
 
 	$scope.checkGeoFilters = function(feature) {
 		// If we are intersecting results, the default value is true, as we must "prove" that
@@ -148,7 +159,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	 * Adds an entry in the geometyFilter watched array for a tool so it can add geometries for use
 	 * for filtering.
 	 */ 
-	$scope.registerGeometryFilter = function(filterToolId) {
+	$scope.registerGeometryFilter = function(filterToolId, clearCallback) {
 		var toolFilter = {
 			geometries: [], 
 			featuresMatching:0,
@@ -192,6 +203,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		};
 
 		toolFilter.clear = function() {
+			clearCallback();
+			
+			
 			toolFilter.geometries.splice(0, toolFilter.geometries.length);					
 			$scope.applyGeoFilters();	
 			$scope.geometryFilterCount=0;
