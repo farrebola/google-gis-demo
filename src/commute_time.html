@@ -1,0 +1,12 @@
+<div class="btn-group walkingDistance dropdown" ng-controller="CommuteTimeCtrl">
+	<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Commute Time <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
+	<div class="dropdown-menu topbar">
+		<form>
+			<p>
+				<span>Time: </span>
+				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
+				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
+			</p>
+    	</form>
+	</div>
+</div>
