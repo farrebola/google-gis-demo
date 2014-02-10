@@ -194,7 +194,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			}
 			
 			for(var i=0; i < feature.length; i++) {
-				var index = toolFilter.geometries.indexOf(feature);
+				var index = toolFilter.geometries.indexOf(feature[i]);
 				toolFilter.geometries.splice(index,1);		
 				$scope.geometryFilterCount--;
 			}
