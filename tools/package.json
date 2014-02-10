@@ -1,0 +1,10 @@
+{
+	"name": "google-gis-demo-tools",
+	"description": "Google GIS Demo Tools",
+	"version": "0.0.1",
+	"dependencies": {
+		"http-request": "*",
+		"xml2json": "*",
+		"ent": "*"
+	}
+}

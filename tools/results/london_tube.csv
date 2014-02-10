@@ -1,0 +1,151 @@
+station_code;atcocode;name;mode;longitude;latitude;lines;distance
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
+ANG;9400ZZLUAGL;Angel;tube;-0.10538;51.53177;northern;789
+FAR;9400ZZLUFCN;Farringdon;tube;-0.10516;51.52043;circle;1354
+BAR;9400ZZLUBBN;Barbican;tube;-0.09724;51.52031;circle;1453
+OLD;9400ZZLUODS;Old Street;tube;-0.08776;51.52587;northern;1657
+CYL;9400ZZLUCHL;Chancery Lane;tube;-0.11158;51.51825;central;1994
+MGT;9400ZZLUMGT;Moorgate;tube;-0.08832;51.51818;northern,circle;2321
+STP;9400ZZLUSPU;St. Pauls's;tube;-0.09756;51.51494;central;2359
+KXX;9400ZZLUKSX;King's Cross St. Pancras;tube;-0.12319;51.53067;victoria,northern,piccadilly,circle;2379
+RSQ;9400ZZLURSQ;Russell Square;tube;-0.12428;51.52308;piccadilly;2585
+HOL;9400ZZLUHBN;Holborn;tube;-0.12047;51.51758;piccadilly,central;2723
+LST;9400ZZLULVT;Liverpool Street;tube;-0.08318;51.51738;circle,central;2830
+BLF;9400ZZLUBKF;Blackfriars;tube;-0.10365;51.51159;circle;2902
+MAN;9400ZZLUMSH;Mansion House;tube;-0.09409;51.51187;circle;2992
+ban;9400ZZDLBNK;Bank DLR Station;tube;-0.08879;51.51316;dlr;3020
+BNK;9400ZZDLBNK;Bank;tube;-0.08851;51.51324;waterlooandcity,central,northern;3023
+CST;9400ZZLUCST;Cannon Street;tube;-0.09043;51.51151;circle;3199
+TEM;9400ZZLUTMP;Temple;tube;-0.11426;51.51101;circle;3283
+HBY;9400ZZLUHAI;Highbury;tube;-0.10332;51.54636;victoria;3325
+EUS;9400ZZLUEUS;Euston;tube;-0.13378;51.528;northern,victoria;3502
+MON;9400ZZLUMMT;Monument;tube;-0.08596;51.5107;circle;3559
+COV;9400ZZLUCGN;Covent Garden;tube;-0.12443;51.5131;piccadilly;3600
+TCR;9400ZZLUTCR;Tottenham Court Road;tube;-0.13041;51.51643;northern,central;3729
+ESQ;9400ZZLUESQ;Euston Square;tube;-0.13582;51.52561;circle;3749
+ALD;9400ZZLUALD;Aldgate;tube;-0.07586;51.51449;circle;3787
+GST;9400ZZLUGDG;Goodge Street;tube;-0.13436;51.5206;northern;3791
