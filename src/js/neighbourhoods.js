@@ -64,7 +64,7 @@ googleGisDemo.controller("NeighbourhoodsCtrl", function($scope, $http) {
 	$scope.getNeighbourhoods = function(){
 		var url = $scope.propertiesUrl;
   		var params = {
-			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+			key: $scope.googleAPIKey,
 			version: "published"
 		};
 		$http({

@@ -1,9 +1,12 @@
 var googleGisDemo = angular.module("googleGisDemo", ["scroll", "ui.bootstrap"]);
 
 googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
+	$scope.googleAPIKey = "AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w";
+
 	$scope.showPanel = true;
 	
 	$loading = false;
+	$scope.loading = false;
 	
 	/**
 	 * The results as are received from the request api.
@@ -307,7 +310,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		$scope.loading = true;
 		
 		var params = {
-			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+			key: $scope.googleAPIKey,
 			version: "published",
 			maxResults: 1000,
 			limit: 1000
