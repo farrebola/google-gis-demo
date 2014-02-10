@@ -38,7 +38,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.getTubeLines = function(){
 		var url = $scope.propertiesUrl;
   		var params = {
-			key: "AIzaSyBkvm3UGVoIpBtGA_rw7THbnvXNcSp6W1k",
+			key: $scope.googleAPIKey,
 			version: "published"
 		};
 		$http({
