@@ -5,7 +5,6 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 	$scope.showPanel = true;
 	
-	$loading = false;
 	$scope.loading = false;
 	
 	/**
@@ -274,6 +273,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			};
 			
 			$scope.map._markers.push(marker);
+			result.marker = marker;
 		});
 	};
 
@@ -293,7 +293,6 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		$scope.selectedResult = result;
 		
 		result.marker.toggleBounce(true);
-		result.marker.setZIndex(1000);
 		result.active = true;
 		result.marker.showInfoWindow();
 
