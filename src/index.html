@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="googleGisDemo">
 	<head>
-		<title>Google GIS Demo App</title>
+		<title>SnowDrop GIS Demo App</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
+		<meta lang="en">
 		 <!-- CSS de Bootstrap -->
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
@@ -53,7 +54,7 @@
 			      	<span class="icon-bar"></span>
 			      	<span class="icon-bar"></span>
 			    </button>
-			    <a class="navbar-brand" href="#">Google GIS Demo</a>
+			    <a class="navbar-brand" href="#">SnowDrop GIS Demo</a>
 			</div>
 
 
@@ -123,8 +124,26 @@
 				</div>
 
 				<div class="col-md-8 full-height ">
-					<div class="input-group" ng-controller="searchbarCtrl" style="display:none">
-      					<input type="text" class="form-control" ng-model="selected" placeholder="Location ..." typeahead="address.formatted_address for address in getLocation($viewValue) | filter:$viewValue" typeahead-on-select="select($item)">
+					<div class="input-group search-bar solid-hover" ng-controller="searchbarCtrl" style="display:none"
+						ng-class="{'translucent': !selected}">
+						<span class="input-group-addon"><span class="glyphicon" ng-class="{'glyphicon-search': !loadingPlaces,'glyphicon-refresh spin': loadingPlaces}"></span></span>
+      					<input type="text" class="form-control" ng-model="selected" placeholder="Location..." 
+							typeahead-wait-ms="200" typeahead="address.formatted_address for address in getLocation($viewValue)" typeahead-on-select="select($item)"/>
+						
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-disabled="!selected"
+								ng-click="clearSearch()">
+								<span class="glyphicon glyphicon-remove"></span>
+								<span class="sr-only">Remove address</span>
+							</button>
+						</span>
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-disabled="!selected"
+								ng-click="goTo()">
+								<span class="glyphicon glyphicon-share-alt"></span>
+								<span class="sr-only">Go to</span>
+							</button>
+						</span>
     				</div>
 					<div id="map" class="full-height well"></div>
 				</div>
