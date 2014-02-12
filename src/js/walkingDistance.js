@@ -1,7 +1,7 @@
 googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.minvalue=0;
 	$scope.maxvalue=60;
-	$scope.value=10;
+	$scope.walkingMinutes=10;
 	$scope.propertiesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/01048493643384141193-15363260755447510668/features';
 
 	$scope.resultsFound ="";
@@ -19,19 +19,16 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		{ label: "Restaurants", checked: false}
 	];
 
-	$scope.togglePlaces = function() {
+	$scope.togglePlaces = function(forceDisable) {
+		
 		for (var i = 0; i < $scope.placeKinds.length; i++) {
-			// We need to negate allPlacesOn because the event gets fired
-			// before the model is updated.
-			$scope.placeKinds[i].checked = !$scope.allPlacesOn;
+			$scope.placeKinds[i].checked = $scope.allPlacesOn;
 		};
 	};
 
-	$scope.toggleLines = function() {
+	$scope.toggleLines = function(forceDisable) {
 		for (var i = 0; i < $scope.tubeLines.length; i++) {
-			// We need to negate allLinesOn because the event gets fired
-			// before the model is updated.
-			$scope.tubeLines[i].checked = !$scope.allLinesOn;
+			$scope.tubeLines[i].checked = $scope.allLinesOn;
 		};
 	};
 
@@ -47,7 +44,11 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			params: params
 		}).success(function(data, status, header, config){
 			var option = {
-				icon: "http://www.google.com/mapfiles/ms/micons/subway.png"
+				icon: {
+					url: "glyphicons/png/glyphicons_014_train.png",
+					scaledSize: new google.maps.Size(20,20),
+					anchor: new google.maps.Point(10,10)
+				}
 			};
 			var featureCollection = new GeoJSON(data, option);
 			var lines = [];
@@ -80,7 +81,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			}
 		});
 	};
-	$scope.check = function(el){
+	$scope.toggleLine = function(el){
 		for(var i=0; i<$scope.tubeStations.length; i++){
 			if($scope.tubeStations[i].geojsonProperties.Line.indexOf(el.label) != -1){
 				if(!el.checked){
