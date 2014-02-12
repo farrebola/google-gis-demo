@@ -5,7 +5,8 @@
     "bootstrap-slider": "git://github.com/pammacdotnet/bootstrap-slider#*",
     "bootstrap": "bootstrap#~3.1.0",
     "geoJSON-to-Google-Maps": "git://github.com/JasonSanford/geojson-google-maps.git#*",
-    "angular-bootstrap": "angular-bootstrap#~0.10.0"
+    "angular-bootstrap": "angular-bootstrap#~0.10.0",
+    "markerclustererplus": "https://github.com/mahnunchik/markerclustererplus.git#*"
   },
   "devDependencies": {}
 }
