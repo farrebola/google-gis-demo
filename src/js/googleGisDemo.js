@@ -39,6 +39,8 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			intersection: false
 		}
 	];
+	
+	$scope.maxClusterZoom = 14;
 
 	$scope.statusLabels = {
 		for_sale: "For Sale",
@@ -52,7 +54,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	};
 	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 	$scope.cluster = new MarkerClusterer($scope.map,[],{
-		maxZoom: 15
+		maxZoom: $scope.maxClusterZoom
 	});
 
 	$scope.mapsEngineLayer = new google.maps.visualization.DynamicMapsEngineLayer({
@@ -315,7 +317,10 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		result.marker.showInfoWindow();
 
 		$scope.map.panTo(result.marker.position);
-
+		
+		if($scope.map.getZoom() <= $scope.maxClusterZoom) {
+			$scope.map.setZoom($scope.maxClusterZoom +1);		
+		}
 	};
 
 	$scope.loadNextPage = function() {
