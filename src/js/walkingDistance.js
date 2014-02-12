@@ -84,13 +84,39 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		for(var i=0; i<$scope.tubeStations.length; i++){
 			if($scope.tubeStations[i].geojsonProperties.Line.indexOf(el.label) != -1){
 				if(!el.checked){
-					$scope.tubeStations[i].setMap(null);
+					$scope.tubeStations[i].setMap(null);					
+					$scope.toolFilter.remove($scope.tubeStations[i]._circle);
 				}else{
-					$scope.tubeStations[i].setMap($scope.map);
+					$scope.tubeStations[i].setMap($scope.map);					
+					this._createWalkingRadius($scope.tubeStations[i]);
+					
 				}
 			}
 		}
 	};
+	
+	$scope._createWalkingRadius = function(marker) {
+		
+		// Add the circle for this city to the map.
+		marker._circle = new google.maps.Circle({
+		  strokeColor: '#FF0000',
+		  strokeOpacity: 0.8,
+		  strokeWeight: 2,
+		  fillColor: '#FF0000',
+		  fillOpacity: 0.35,
+		  map: $scope.map,
+		  center: marker.position,
+		  radius: 33 /*meters / minute*/ * $scope.walkingMinutes
+		});
+		
+		$scope.toolFilter.add(marker._circle);
+	};
+	
+	$scope.clearAllCallback = function() {
+		$scope.toggleLines();	
+		$scope.togglePlaces();
+	};
+	
 	// Method to add a station into a line object
 	var addStation = function(line, station){
 		var index = pointInLine(line);
@@ -121,4 +147,6 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
     });
     // Initialize tube lines
   	$scope.getTubeLines();
+	
+	$scope.toolFilter = $scope.registerGeometryFilter("WalkingDistanceCtrl", $scope.clearAllCallback);
 });
