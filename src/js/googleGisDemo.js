@@ -11,6 +11,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	 * The results as are received from the request api.
 	 */
 	$scope.results = [];
+	$scope._markers = [];
 
 	/**
 	 * The results that comply with the geo filters.
@@ -50,10 +51,15 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+	$scope.cluster = new MarkerClusterer($scope.map,[],{
+		maxZoom: 15
+	});
 
 	$scope.mapsEngineLayer = new google.maps.visualization.DynamicMapsEngineLayer({
 		layerId: '17054336369362646689-11613121305523030954',
-		map: $scope.map
+		map: $scope.map,
+		clickable: false,
+		suppressInfoWindows: true
 	});
 
 	/**
@@ -235,14 +241,11 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	$scope.addMarkersToMap = function() {
 		
 		
-		if($scope.map._markers) {
-			angular.forEach($scope.map._markers, function(oldmarker) {
-				oldmarker.setMap(null);
-				oldmarker = null;
-			})	
+		if($scope._markers) {
+			$scope.cluster.clearMarkers();
 		}
 		
-		$scope.map._markers = [];
+		$scope._markers = [];
 		
 		angular.forEach($scope.geoFilteredResults, function(result) {
 			var marker = new google.maps.Marker({
@@ -250,8 +253,12 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 					lat: result.geometry.coordinates[1],
 					lng: result.geometry.coordinates[0]
 				},
-				title: result.properties.displayable_address,
-				map: $scope.map
+				title: result.properties.displayable_address,				
+				icon: {					
+					url: "glyphicons/png/glyphicons_020_home.png",
+					scaledSize: new google.maps.Size(20,20),
+					anchor: new google.maps.Point(10,10),
+				}
 			});
 
 
@@ -281,7 +288,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				}
 			};
 			
-			$scope.map._markers.push(marker);
+			$scope.cluster.addMarker(marker);
+			
+			$scope._markers.push(marker);
 			result.marker = marker;
 		});
 	};
