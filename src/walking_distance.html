@@ -4,12 +4,13 @@
 		<form>
 			<p>
 				<span>Maximum walking time: </span>
-				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{walkingMinutes}}" ng-model="walkingMinutes"/>
+				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{walkingMinutes}}" ng-model="walkingMinutes"
+					ng-change="timeChange()"/>
 				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{walkingMinutes}}</span> min</span>
 			</p>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					Tube line stations
+					Tube & Rail Stations
 					<label class="checkbox pull-right">
                 		<input type="checkbox" ng-change="toggleLines()" ng-model="allLinesOn">
                 		Mark all
@@ -17,7 +18,7 @@
 				</div>
 				<div class="panel-body">
 					<ul class="checkbox-list col-md-12">
-        			<li ng-repeat="tubeLine in tubeLines | orderBy: 'label'">
+        			<li ng-repeat="(tubeLineId, tubeLine) in tubeLines | orderBy: 'label'">
             			<label class="checkbox">
                 			<input type="checkbox" ng-model="tubeLine.checked" ng-change="toggleLine(tubeLine)">
                 			{{tubeLine.label}}
