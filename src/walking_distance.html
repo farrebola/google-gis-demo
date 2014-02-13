@@ -39,7 +39,7 @@
 					<ul class="checkbox-list col-md-12">
         			<li ng-repeat="placeKind in placeKinds">
             			<label class="checkbox">
-                			<input type="checkbox" class="placeKindCB" ng-model="placeKind.checked">
+                			<input type="checkbox" class="placeKindCB" ng-model="placeKind.checked" ng-change="checkPlace(placeKind)">
                 			{{placeKind.label}}
             			</label>
         			</li>        			
