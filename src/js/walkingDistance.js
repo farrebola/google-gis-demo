@@ -4,6 +4,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.walkingMinutes=20;
 	$scope.tubeLinesUrl = 'https://www.googleapis.com/mapsengine/v1/tables/01048493643384141193-15363260755447510668/features';
 	$scope.railwaysUrl = 'https://www.googleapis.com/mapsengine/v1/tables/01048493643384141193-04996796288385000359/features';
+	$scope.placesUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
 	$scope.resultsFound ="";
 
@@ -13,13 +14,35 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.tubeLines = {};
 	
 	$scope.colors = ["#00F6FF","#68E80C","#FFAD00","E80E0C","3E02FF"];
+	$scope.places = [];
 
-	$scope.placeKinds = [
-		{ label: "Grocery", checked: false},
-		{ label: "Coffe Shop", checked: false},
-		{ label: "High Schools", checked: false},
-		{ label: "Restaurants", checked: false}
-	];
+	$scope.placeKinds = [{ 
+		label: "Grocery", 
+		checked: false, 
+		type: "grocery_or_supermarket", 
+		shape: [], 
+		icon_url: "glyphicons/png/glyphicons_202_shopping_cart.png"
+	},{ 
+		label: "Pharmacy", 
+		checked: false, 
+		type: "pharmacy", 
+		shape: [],
+		icon_url: "glyphicons/png/glyphicons_298_hospital.png"
+	},{ 
+		label: "High Schools", 
+		checked: false, 
+		type: "school", 
+		shape: [],
+		icon_url: "glyphicons/png/glyphicons_351_book_open.png"
+	},{ 
+		label: "Hospital", 
+		checked: false, 
+		type: "hospital", 
+		shape: [],
+		icon_url: "glyphicons/png/glyphicons_299_hospital_h.png"
+	}];
+
+	var typePlace = null;
 
 	$scope.togglePlaces = function() {
 		
@@ -104,7 +127,13 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			$scope.tubeLines[lineName] = line;
 		});
 	};
-	
+	$scope.initializePlaces = function(){
+		var placesTypes = [];
+		for(var i=0; i<$scope.placeKinds.length; i++){
+			$scope.getPlaceShapes($scope.placeKinds[i].type);
+			typePlace = $scope.placeKinds[i].type;
+		}
+	};
 	$scope.timeChange = function() {
 		$scope.toolFilter.clear();
 		angular.forEach($scope.tubeLines, function(line){
@@ -115,7 +144,6 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 					
 				$scope.toggleLine(line);
 			}
-			
 		})
 	};
 	
@@ -242,6 +270,45 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		$scope.toggleLines();	
 		$scope.togglePlaces();
 	};
+	$scope.checkPlace = function(el){
+		for(var i=0; i<$scope.placeKinds.length; i++){
+			if($scope.placeKinds[i].type == el.type){
+				if(el.checked){
+					if(Array.isArray($scope.placeKinds[i].shape)){
+						handlerArrayShape($scope.placeKinds[i].shape, $scope.map);
+					}else{
+						$scope.placeKinds[i].shape.setMap($scope.map);
+					}
+				}else{
+					if(Array.isArray($scope.placeKinds[i].shape)){
+						handlerArrayShape($scope.placeKinds[i].shape, null);
+					}else{
+						$scope.placeKinds[i].shape.setMap(null);
+					}
+				}
+			}
+		}
+	};
+	$scope.getPlaceShapes = function(type, next_token){
+		var lat = $scope.map.getCenter().lat();
+		var lng = $scope.map.getCenter().lng();
+		var location = new google.maps.LatLng(lat, lng);
+		var service = new google.maps.places.PlacesService($scope.map);
+		var request = {
+			location: location,
+			radius: "50000",
+			rankby: "distance",
+			types: [type],
+			sensor: false
+		};
+		service.nearbySearch(request, callback);
+	};
+	// Method to add/remove marker to map
+	var handlerArrayShape = function(shape, map){
+		for(var i=0; i<shape.length; i++){
+			shape[i].setMap(map);
+		}
+	};
 	
 	// Method to add a station into a line object
 	var addStation = function(line, station){
@@ -267,12 +334,48 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		}
 		return contains;
 	};
+	var callback = function(results, status, pagination){
+		var indexPlace = -1;
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+    		for (var i = 0; i < results.length; i++) {
+      			createMarker(results[i], indexPlace);
+    		}
+  		}
+  		if (pagination.hasNextPage){
+  			pagination.nextPage();
+  		}
+	};
+	var contains = function(a, obj) {
+    	for (var i = 0; i < a.length; i++) {
+        	if (a[i] === obj) {
+         	   return true;
+        	}
+    	}
+    	return false;
+	};
+	var createMarker = function(place, index) {
+		var placeLoc = place.geometry.location;
+  		var marker = new google.maps.Marker({
+    		position: placeLoc
+  		});
+		for(var i=0; i<$scope.placeKinds.length; i++){
+			if(contains(place.types, $scope.placeKinds[i].type)){
+				marker.setIcon({
+  					url: $scope.placeKinds[i].icon_url,
+  					scaledSize: new google.maps.Size(20,20),
+					anchor: new google.maps.Point(10,10)
+  				});
+				$scope.placeKinds[i].shape.push(marker);
+			}
+		}
+  	};
 	// Stop the propagation of the click event
 	$('.dropdown-menu').on('click', function(e) {
         e.stopPropagation();
     });
     // Initialize tube lines
   	$scope.getTubeLines();
-	
+	// Initialize places
+  	$scope.initializePlaces();
 	$scope.toolFilter = $scope.registerGeometryFilter("WalkingDistanceCtrl", $scope.clearAllCallback);
 });
