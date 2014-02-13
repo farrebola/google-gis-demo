@@ -57,13 +57,6 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		maxZoom: $scope.maxClusterZoom
 	});
 
-	$scope.mapsEngineLayer = new google.maps.visualization.DynamicMapsEngineLayer({
-		layerId: '17054336369362646689-11613121305523030954',
-		map: $scope.map,
-		clickable: false,
-		suppressInfoWindows: true
-	});
-
 	/**
 	 * Watches for changes in the filters (done by the filter tool controllers)
  	 * add apply the filters on the results.
@@ -156,7 +149,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			
 			// We handle multipolygons with recursion.
 			if(angular.isArray(g)) {
-				if($scope.checkToolFilter(feature, g)) {				
+				if($scope.checkToolFilter(feature, g)) {
 					return true;				
 				}
 			} else if (g.radius) {

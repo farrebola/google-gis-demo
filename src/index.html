@@ -5,16 +5,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
 		<meta lang="en">
-		 <!-- CSS de Bootstrap -->
+		 <!-- bootstrap css files -->
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
 	    <link href="../bower_components/bootstrap-slider/slider.css" rel="stylesheet" media="screen">
 
-	    <link href="css/walking_distance.css" rel="stylesheet" media="screen">
-	    <link href="css/neighbourhoods.css" rel="stylesheet" media="screen">
+		<!-- custom css files -->
 	    <link href="css/app.css" rel="stylesheet" media="screen">
+	    <link href="css/walking_distance.css" rel="stylesheet" media="screen">
+	    <link href="css/neighbourhoods.css" rel="stylesheet" media="screen">	    
 	 
-	    <!-- librerías opcionales que activan el soporte de HTML5 para IE8 -->
+	    <!-- boostrap old IEs support -->
 	    <!--[if lt IE 9]>
 	      <script src=".../bower_components/bootstrap/dist/js/html5shiv.js"></script>
 	      <script src="../bower_components/bootstrap/dist/js/respond.min.js"></script>
@@ -23,22 +24,30 @@
 
 		<script src="http://code.jquery.com/jquery.js"></script>
  
-    	<!-- Todos los plugins JavaScript de Bootstrap (también puedes
-         incluir archivos JavaScript individuales de los únicos
-         plugins que utilices) -->
+    	<!-- Bower dependencies -->
     	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     	<script src="../bower_components/bootstrap-slider/bootstrap-slider.js"></script>
     	<script src="../bower_components/geoJSON-to-Google-Maps/GeoJSON.js"></script>
     	<script src="../bower_components/angular/angular.js"></script>
     	<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>		
 		<script src="../bower_components/markerclustererplus/src/markerclusterer.js"></script>
+		<script src="../bower_components/wicket/wicket.js"></script>
+		<script src="../bower_components/wicket/wicket-gmap3.js"></script>
+		<script src="../bower_components/jsts/lib/javascript.util.js"></script>
+		<script src="../bower_components/jsts/lib/jsts.js"></script>
+		
+		<!-- Non-bower javascripts dependencies-->
+		
+    	<script src="js/scroll.js"></script>
+		
+		<!-- Controllers and directives -->
     	<script src="js/googleGisDemo.js"></script>
+		<script src="js/angularSlider.js"></script>
     	<script src="js/walkingDistance.js"></script>
     	<script src="js/commuteTime.js"></script>
     	<script src="js/neighbourhoods.js"></script>
     	<script src="js/geoFence.js"></script>
-    	<script src="js/angularSlider.js"></script>
-    	<script src="js/scroll.js"></script>
+    	
     	<script src="js/searchbar.js"></script>
 
     	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w&sensor=false&libraries=drawing,visualization,geometry"></script>    	 

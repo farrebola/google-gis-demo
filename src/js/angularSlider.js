@@ -15,8 +15,12 @@ googleGisDemo.directive('slider', function($parse){
 
 				var processChange = function (sliderEvt) {
 					scope.$apply(function (scope) {
-					// Change bound variable
-					modelAccessor.assign(scope, sliderEvt.value);
+						// Change bound variable
+						modelAccessor.assign(scope, sliderEvt.value);
+						
+						if(attrs.ngChange) {
+							scope.$eval(attrs.ngChange);
+						}
 					});
             	};
 

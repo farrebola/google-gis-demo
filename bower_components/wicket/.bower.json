@@ -1,0 +1,13 @@
+{
+  "name": "wicket",
+  "homepage": "https://github.com/arthur-e/Wicket",
+  "_release": "0fa8bc76a9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "0fa8bc76a914a772892d2041d2e108ad72781cb0"
+  },
+  "_source": "https://github.com/arthur-e/Wicket.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/arthur-e/Wicket.git"
+}

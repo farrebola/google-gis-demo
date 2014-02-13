@@ -96,3 +96,7 @@
 .solid-hover:focus {
 	opacity: 1
 }
+
+.input-group-btn:not(:last-child)>.btn {
+	border-radius: 0;
+}
