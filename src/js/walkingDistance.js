@@ -367,6 +367,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
   				});
 				$scope.placeKinds[i].shape.push(marker);
 			}
+			break;
 		}
   	};
 	// Stop the propagation of the click event
