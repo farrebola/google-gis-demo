@@ -4,7 +4,7 @@
 		<form>
 			<p>
 				<span>Maximum walking time: </span>
-				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{walkingMinutes}}" ng-model="walkingMinutes"
+				<slider id="wds" type="text" data-slider-min="0" data-slider-max="60" data-slider-step="5" ng-model="walkingMinutes"
 					ng-change="timeChange()"/>
 				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{walkingMinutes}}</span> min</span>
 			</p>
