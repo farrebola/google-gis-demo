@@ -6,119 +6,84 @@ googleGisDemo.controller("CommuteTimeCtrl", function($scope, $http) {
 
 	$scope.resultsFound ="";
 
-	$scope.allLinesOn = false;
-	$scope.allPlacesOn = false;
+	$scope.search="";
 
-	$scope.tubeLines = [];
-	$scope.tubeStations = [];
+	var input = (document.getElementById('pac-input'));
+	  
+	//$scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-	$scope.placeKinds = [
-		{ label: "Grocery", checked: false},
-		{ label: "Coffe Shop", checked: false},
-		{ label: "High Schools", checked: false},
-		{ label: "Restaurants", checked: false}
-	];
+  	var searchBox = new google.maps.places.SearchBox((input));
+  	var markers = [];
 
-	$scope.togglePlaces = function() {
-		for (var i = 0; i < $scope.placeKinds.length; i++) {
-			// We need to negate allPlacesOn because the event gets fired
-			// before the model is updated.
-			$scope.placeKinds[i].checked = !$scope.allPlacesOn;
-		};
+  	// Listen for the event fired when the user selects an item from the
+  	// pick list. Retrieve the matching places for that item.
+  	google.maps.event.addListener(searchBox, 'places_changed', function() {
+    	var places = searchBox.getPlaces();
+
+	    for (var i = 0, marker; marker = markers[i]; i++) {
+	      marker.setMap(null);
+	    }
+
+	    // For each place, get the icon, place name, and location.
+	    markers = [];
+	    var bounds = new google.maps.LatLngBounds();
+	    for (var i = 0, place; place = places[i]; i++) {
+	      var image = {
+	        url: place.icon,
+	        size: new google.maps.Size(71, 71),
+	        origin: new google.maps.Point(0, 0),
+	        anchor: new google.maps.Point(17, 34),
+	        scaledSize: new google.maps.Size(25, 25)
+	      };
+
+	      // Create a marker for each place.
+	      var marker = new google.maps.Marker({
+	        map: $scope.map,
+	        icon: image,
+	        title: place.name,
+	        position: place.geometry.location
+	      });
+
+	      markers.push(marker);
+
+	      bounds.extend(place.geometry.location);
+	    }
+
+    $scope.map.fitBounds(bounds);
+  });
+
+	// Bias the SearchBox results towards places that are within the bounds of the
+	// current map's viewport.
+	google.maps.event.addListener(map, 'bounds_changed', function() {
+		var bounds = map.getBounds();
+		searchBox.setBounds(bounds);
+	});
+
+	var listhandler = null;
+
+	var handlerClickReverseGeo = function(event){
+	    var geocoder = new google.maps.Geocoder();
+   		geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
+        if (status !== google.maps.GeocoderStatus.OK) {
+            alert(status);
+        }
+        // This is checking to see if the Geoeode Status is OK before proceeding
+        if (status == google.maps.GeocoderStatus.OK) {
+            var address = (results[0].formatted_address);
+            document.getElementById('selectedComm').value = address;
+        }
+    });
+
+		google.maps.event.removeListener(listhandler);
+	}
+
+
+	$scope.revGeoSearch = function (){
+		listhandler = google.maps.event.addListener($scope.map, 'click', handlerClickReverseGeo);
 	};
 
-	$scope.toggleLines = function() {
-		for (var i = 0; i < $scope.tubeLines.length; i++) {
-			// We need to negate allLinesOn because the event gets fired
-			// before the model is updated.
-			$scope.tubeLines[i].checked = !$scope.allLinesOn;
-		};
-	};
-
-	$scope.getTubeLines = function(){
-		var url = $scope.propertiesUrl;
-  		var params = {
-			key: $scope.googleAPIKey,
-			version: "published"
-		};
-		$http({
-			method: 'GET',
-			url: url,
-			params: params
-		}).success(function(data, status, header, config){
-			var option = {
-				icon: "http://www.google.com/mapfiles/ms/micons/subway.png"
-			};
-			var featureCollection = new GeoJSON(data, option);
-			var lines = [];
-			for(var i=0; i<featureCollection.length; i++){
-				var line_str = featureCollection[i].geojsonProperties.Line;
-				if(line_str.indexOf(";") == -1){
-					if(lines.indexOf(line_str) == -1){
-						lines.push(line_str);
-					}
-				}
-				$scope.tubeStations.push(featureCollection[i]);
-				/*if(line_str.indexOf(";") != -1){
-					// There are more than one line
-					var array_lines = line_str.split(";");
-					for(var i=0; i<array_lines.length; i++){
-						addStation(array_lines[i], 
-							featureCollection[i].geojsonProperties.gx_id);
-					}
-				}else{
-					// There are only one line
-					addStation(line_str, 
-						featureCollection[i].geojsonProperties.gx_id);
-				}*/
-			}
-			for (var i=0; i<lines.length; i++){
-				$scope.tubeLines.push({
-					label: lines[i],
-					checked: false
-				});
-			}
-		});
-	};
-	$scope.check = function(el){
-		for(var i=0; i<$scope.tubeStations.length; i++){
-			if($scope.tubeStations[i].geojsonProperties.Line.indexOf(el.label) != -1){
-				if(!el.checked){
-					$scope.tubeStations[i].setMap(null);
-				}else{
-					$scope.tubeStations[i].setMap($scope.map);
-				}
-			}
-		}
-	};
-	// Method to add a station into a line object
-	var addStation = function(line, station){
-		var index = pointInLine(line);
-		if(index != -1){
-			$scope.tubeLines[index].stations.push(station);
-		}else{
-			$scope.tubeLines.push({
-				label: line,
-				checked: false,
-				stations: [station]
-			});
-		}
-	};
-	// Method to know if an objects array contains an id object
-	var pointInLine = function(line){
-		var contains = -1;
-		for(var i=0; i<$scope.tubeLines.length; i++){
-			if($scope.tubeLines[i].label == line){
-				contains = i;
-				break;
-			}
-		}
-		return contains;
-	};
 	// Stop the propagation of the click event
 	$('.dropdown-menu').on('click', function(e) {
         e.stopPropagation();
     });
-    // Initialize tube lines
-  	$scope.getTubeLines();
 });

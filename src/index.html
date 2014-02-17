@@ -49,6 +49,7 @@
     	<script src="js/geoFence.js"></script>
     	
     	<script src="js/searchbar.js"></script>
+    	<script src="js/searchbarCommuting.js"></script>
 
     	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w&sensor=false&libraries=drawing,visualization,geometry,places"></script>    	 
 	</head>
@@ -76,10 +77,10 @@
 						<select class="form-control btn btn-default" ng-model="filterIntersectionMode" ng-change="applyGeoFilters()"
 							ng-options="o.intersection as o.label for o in filterCombinationModes">                          
                         </select>
-						<ng-include src="'commute_time.html'" class="btn-group"></ng-include>
 						<ng-include src="'walking_distance.html'" class="btn-group"></ng-include>
 						<ng-include src="'neighbourhoods.html'" class="btn-group"></ng-include>
 			    		<ng-include src="'geofence.html'" class="btn-group"></ng-include>
+						<ng-include src="'commute_time.html'" class="btn-group"></ng-include>
 						
 						<button type="button" class="btn btn-default" ng-disabled="!geometryFilterCount"
 							ng-click="clearAllToolFilters()">

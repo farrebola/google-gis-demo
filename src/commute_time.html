@@ -1,9 +1,23 @@
 <div class="btn-group walkingDistance dropdown" ng-controller="CommuteTimeCtrl">
-	<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Commute Time <span class="badge">{{resultsFound}}</span> <b class="caret"></b></a>
+	<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Commuting </a>
 	<div class="dropdown-menu topbar">
 		<form>
 			<p>
-				<span>Time: </span>
+				<span>Workplace address: </span>
+				<div class="input-group" ng-controller="searchbarCommCtrl" ng-class="{'translucent': !selected}">
+  					<input type="text" class="form-control" id="selectedComm" ng-model="selectedComm" placeholder="Location..." 
+						typeahead-wait-ms="200" typeahead="address.formatted_address for address in getLocation($viewValue)" typeahead-on-select="select($item)"/>
+    			
+	    			<span class="input-group-btn">
+		    			<button type="button" class="btn btn-default" ng-click="revGeoSearch()">
+							<span class="glyphicon glyphicon-globe"></span>
+							<span class="sr-only">Reverse geocoding</span>
+						</button>
+					</span>
+				</div>
+			</p>
+			<p>
+				<span>Maximun walking time: </span>
 				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
 				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
 			</p>
