@@ -68,6 +68,8 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 	$scope.applyGeoFilters = function() {
 		var filtered = [];
+		
+		console.time("applyGeoFilters");
 
 		// We initialize the carets of the tools.
 		for(var toolFilterKey in $scope.geometryFilters) {			
@@ -88,7 +90,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		}
 
 
-		$scope.geoFilteredResults = filtered;		
+		$scope.geoFilteredResults = filtered;	
+		
+		console.timeEnd("applyGeoFilters");
 	};
 	
 	/**
@@ -235,7 +239,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 	 */
 	$scope.addMarkersToMap = function() {
 		
-		
+		console.time("addMarkersToMap");
 		if($scope._markers) {
 			$scope.cluster.clearMarkers();
 		}
@@ -288,6 +292,8 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 			$scope._markers.push(marker);
 			result.marker = marker;
 		});
+		
+		console.timeEnd("addMarkersToMap");
 	};
 
 	$scope.resultClicked = function(result) {
