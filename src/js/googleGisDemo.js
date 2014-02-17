@@ -102,7 +102,7 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		for(var filterToolId in $scope.geometryFilters) {
 			var filterTool = $scope.geometryFilters[filterToolId];
 			
-			filterTool.clear();
+			filterTool.clear(true);
 		}
 	};
 
@@ -209,18 +209,21 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				feature = [feature];
 			}
 			
-			for(var i=0; i < feature.length; i++) {
+			for(var i=0; toolFilter.geometries.length && i < feature.length; i++) {
 				var index = toolFilter.geometries.indexOf(feature[i]);
-				toolFilter.geometries.splice(index,1);		
-				$scope.geometryFilterCount--;
+				if(index>=0) {
+					toolFilter.geometries.splice(index,1);		
+					$scope.geometryFilterCount--;	
+				}				
 			}
 			
 			$scope.applyGeoFilters();				
 		};
 
-		toolFilter.clear = function() {
-			clearCallback();
-			
+		toolFilter.clear = function(clearAllFilters) {
+			if(clearAllFilters) {
+				clearCallback();	
+			}
 			
 			toolFilter.geometries.splice(0, toolFilter.geometries.length);					
 			$scope.applyGeoFilters();	
