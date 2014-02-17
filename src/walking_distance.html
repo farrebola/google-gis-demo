@@ -6,7 +6,7 @@
 				<span>Maximum walking time: </span>
 				<slider id="wds" type="text" data-slider-min="0" data-slider-max="60" data-slider-step="5" ng-model="walkingMinutes"
 					ng-change="timeChange()"/>
-				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{walkingMinutes}}</span> min</span>
+				<span class="pull-right" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{walkingMinutes}}</span> min</span>
 			</p>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -23,7 +23,7 @@
             			<label class="checkbox">
             				
                 			<input type="checkbox" ng-model="tubeLine.checked" ng-change="toggleLine(tubeLine)" >
-                			{{tubeLine.label}}
+                			{{tubeLine.label}} <span class="pull-right badge" style="background-color:{{tubeLine.color}}">&nbsp;</span>
             			</label>
         			</li>
     			</ul>

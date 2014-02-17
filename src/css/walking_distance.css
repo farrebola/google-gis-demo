@@ -1,6 +1,6 @@
 .slider-horizontal {
 	width: 200px !important;
-	margin-top: 10px;
+	/* margin-top: 10px; */
 }
 .slider-handle.round {
 	background-color: blue;

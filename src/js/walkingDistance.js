@@ -12,7 +12,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 
 	$scope.tubeLines = {};
 
-	$scope.colors = ["#00F6FF", "#68E80C", "#FFAD00", "E80E0C", "3E02FF"];
+	$scope.colors = ["#00F6FF", "#68E80C", "#FFAD00", "#E80E0C", "#3E02FF"];
 	$scope.places = [];
 
 	$scope.canvasLayer = null;
@@ -58,13 +58,15 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		$scope.loadingLines= true;
 		setTimeout(function(){
 			for(var el in $scope.tubeLines){
-				$scope.tubeLines[el].checked = $scope.allLinesOn;
-				$scope.toggleLine($scope.tubeLines[el]);
+				if($scope.tubeLines[el].checked != $scope.allLinesOn){
+					$scope.tubeLines[el].checked = $scope.allLinesOn;
+					$scope.toggleLine($scope.tubeLines[el]);	
+				}				
 			}
 			$scope.$apply(function(){
 				$scope.loadingLines=false;
 			});
-		}, 100);
+		}, 10);
 	};
 
 	$scope.getTubeLines = function() {
@@ -148,6 +150,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		// We use a timout to prevent launching to many filterings.
 		
 		if($scope.filterTimeout) {
+			console.debug("filter skipped");
 			clearTimeout($scope.filterTimeout)
 		}
 		
@@ -180,6 +183,12 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 
 			for (var i = 0; i < line.stations.length; i++) {
 				line.stations[i].setMap($scope.map);
+				if(line.stations[i]._circle) {
+					// If we have already a circle, we try to remove it from the filters, as we don't know
+					// if it from a previous walking time change or has been added twice due to the station
+					// appearing in several lines.
+					$scope.toolFilter.remove(line.stations[i]._circle, true);
+				}
 				line._circles.push(this._createWalkingRadius(line.stations[i], radius));
 			}
 
@@ -196,8 +205,6 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			// 	});
 			// 	g.setMap($scope.map);
 			// });
-
-			
 
 		} else {
 
@@ -216,6 +223,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 
 				if (removeStation) {
 					removableCircles.push(station._circle);
+					station._circle = null;
 					station.setMap(null);
 				}
 			});

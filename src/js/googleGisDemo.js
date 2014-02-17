@@ -185,26 +185,36 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 		$scope.geometryFilters[filterToolId] = toolFilter;
 
 
-		toolFilter.add = function(feature) {
+		toolFilter.add = function(feature, skipFilter) {
 			if(!angular.isArray(feature)) {
 				feature = [feature];
 			}
 		
 			for(var i=0; i<feature.length; i++) {
-				toolFilter.geometries.push(feature[i]);
-				$scope.geometryFilterCount++;
+				var index = toolFilter.geometries.indexOf(feature[i]);
+				if(index==-1) {
+					// We prevent to add filter geometries twice.
+					toolFilter.geometries.push(feature[i]);
+					$scope.geometryFilterCount++;	
+				}
+				
 			}
 			
-			$scope.applyGeoFilters();				
+			if(!skipFilter) {
+				$scope.applyGeoFilters();					
+			}
+			
 		};
 
-		toolFilter.update = function(feature) {
-			toolFilter.remove(feature);
-			toolFilter.add(feature);			
-			$scope.applyGeoFilters();				
+		toolFilter.update = function(feature, skipFilter) {
+			toolFilter.remove(feature, true);
+			toolFilter.add(feature, true);			
+			if(!skipFilter) {
+				$scope.applyGeoFilters();					
+			}			
 		};
 
-		toolFilter.remove = function(feature) {
+		toolFilter.remove = function(feature, skipFilter) {
 			if(!angular.isArray(feature)) {
 				feature = [feature];
 			}
@@ -217,7 +227,9 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				}				
 			}
 			
-			$scope.applyGeoFilters();				
+			if(!skipFilter) {
+				$scope.applyGeoFilters();					
+			}			
 		};
 
 		toolFilter.clear = function(clearAllFilters) {
@@ -225,9 +237,10 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 				clearCallback();	
 			}
 			
+			var toolFilterCount = toolFilter.geometries.length;
 			toolFilter.geometries.splice(0, toolFilter.geometries.length);					
 			$scope.applyGeoFilters();	
-			$scope.geometryFilterCount=0;
+			$scope.geometryFilterCount-= toolFilterCount - toolFilter.geometries;
 		};
 
 		return toolFilter;
