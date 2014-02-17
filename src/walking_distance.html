@@ -12,19 +12,17 @@
 				<div class="panel-heading">
 					Tube & Rail Stations
 					<label class="checkbox pull-right">
-                		<input type="checkbox" ng-change="toggleLines()" ng-model="allLinesOn">
+                		<input type="checkbox" ng-change="toggleLines()" ng-model="allLinesOn" ng-class="{hidden: loadingLines}">
+                		<span class="glyphicon glyphicon-refresh spin" ng-class="{hidden: !loadingLines}"></span> 
                 		Mark all
             		</label>
 				</div>
-				<div class="panel-body">
-					<a href="#" class="list-group-item text-center"  ng-class="{hidden: !loading}">
-						Loading
-						<span class="glyphicon glyphicon-refresh spin"></span> 
-					</a>
-					<ul class="checkbox-list col-md-12" ng-class="{hidden: loading}">
+				<div class="panel-body">					
+					<ul class="checkbox-list col-md-12">
         			<li ng-repeat="(tubeLineId, tubeLine) in tubeLines | orderBy: 'label'">
             			<label class="checkbox">
-                			<input type="checkbox" ng-model="tubeLine.checked" ng-change="toggleLine(tubeLine)">
+            				
+                			<input type="checkbox" ng-model="tubeLine.checked" ng-change="toggleLine(tubeLine)" >
                 			{{tubeLine.label}}
             			</label>
         			</li>
