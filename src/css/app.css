@@ -38,6 +38,11 @@
   line-height: 1em;
 }
 
+.checkbox-list .checkbox {
+	width: 100%;
+	padding-right: 10px;
+}
+
 .panel .span {
 	margin-left: 5px;
 }
