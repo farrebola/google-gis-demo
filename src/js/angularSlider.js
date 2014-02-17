@@ -5,8 +5,9 @@ googleGisDemo.directive('slider', function($parse){
 		transclude: false,
 		compile: function (element, attrs) {
 			var modelAccessor = $parse(attrs.ngModel);
+			var mindataAccessor = $parse(attrs.sliderMin);
 
-			var html = "<input id='wds' type='text' data-slider-min='0' data-slider-max='60' data-slider-step='5' data-slider-value='10'/>"
+			var html = "<input id='wds' type='text'/>"
 
 			var newElem = $(html);
 			element.replaceWith(newElem);
@@ -25,10 +26,13 @@ googleGisDemo.directive('slider', function($parse){
             	};
 
             	element.slider({
-					tooltip: 'hide'
+					tooltip: 'hide',
+					min: scope.$eval(attrs.sliderMin),
+					max: scope.$eval(attrs.sliderMax),
+					step: scope.$eval(attrs.sliderStep)
 				}).on('slide', processChange);
-
-            	scope.$watch(modelAccessor, function (val) {
+				
+				scope.$watch(modelAccessor, function (val) {
                		element.slider("setValue", val);
                	});
         	};
