@@ -25,16 +25,23 @@
 	width: 300px;
 	padding: 20px 20px 10px 20px;
 }
-.panel .checkbox {
+
+.checkbox {
 	font-weight: normal;
+	line-height: 1em;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
+
+.checkbox input {
+  vertical-align: bottom;  
+  line-height: 1em;
+}
+
 .panel .span {
 	margin-left: 5px;
 }
-.panel-heading .checkbox {
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
+
 .panel-body {
 	padding: 0 0 0 0;
 }
