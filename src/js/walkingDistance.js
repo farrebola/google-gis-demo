@@ -10,6 +10,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 
 	$scope.allLinesOn = false;
 	$scope.allPlacesOn = false;
+	$scope.loading = false;
 
 	$scope.tubeLines = {};
 	
@@ -45,17 +46,36 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	var typePlace = null;
 
 	$scope.togglePlaces = function() {
-		
 		for (var i = 0; i < $scope.placeKinds.length; i++) {
 			$scope.placeKinds[i].checked = $scope.allPlacesOn;
+			$scope.checkPlace($scope.placeKinds[i]);
 		};
 	};
 
 	$scope.toggleLines = function() {
-		for (var i = 0; i < $scope.tubeLines.length; i++) {
-			$scope.tubeLines[i].checked = $scope.allLinesOn;
-		};
+		$scope.startLoading();
+		setTimeout(function(){
+			$scope.showLines();
+			$scope.$apply(function(){
+				$scope.stopLoading();
+			});
+		}, 100);
 	};
+
+	$scope.startLoading = function(){
+		$scope.loading = $scope.allLinesOn;
+	};
+
+	$scope.showLines = function(){
+		for(var el in $scope.tubeLines){
+			$scope.tubeLines[el].checked = $scope.allLinesOn;
+			$scope.	toggleLine($scope.tubeLines[el]);
+		}
+	};
+
+	$scope.stopLoading = function(){
+		$scope.loading = false;
+	}
 
 	$scope.getTubeLines = function(){
 		$http({
@@ -148,18 +168,14 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	};
 	
 	$scope.toggleLine = function(line){
-		
 		if(line.checked) {
 			line._circles = [];
-			
 			for(var i=0; i<line.stations.length; i++){
 				line.stations[i].setMap($scope.map);					
 				line._circles.push(this._createWalkingRadius(line.stations[i]));				
-			}	
-			
+			}
 			// We add the separate "circles" to the filter.
 			$scope.toolFilter.add(line._circles);
-			
 			// We create the shape we will use for display, uniting the several 
 			// circles so it is prettier.			
 			line._displayGeometry = $scope._geometryUnion(line._circles);		
@@ -169,11 +185,8 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 				})
 				g.setMap($scope.map);
 			});
-			
 		} else {
-			
 			var removableCircles = [];
-			
 			angular.forEach(line.stations, function(station){
 				// As stations might be shared between lines, we need to check if the the 
 				// station isn't active due any other line that is checked before removing it.
@@ -184,15 +197,12 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 						removeStation=false;
 					}
 				});
-				
 				if(removeStation) {
 					removableCircles.push(station._circle);
 					station.setMap(null);
 				}
 			});
-			
 			$scope.toolFilter.remove(removableCircles);
-			
 			angular.forEach(line._displayGeometry, function(g){
 				g.setMap(null);
 			});		
@@ -366,8 +376,8 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 					anchor: new google.maps.Point(10,10)
   				});
 				$scope.placeKinds[i].shape.push(marker);
+				break;
 			}
-			break;
 		}
   	};
 	// Stop the propagation of the click event
