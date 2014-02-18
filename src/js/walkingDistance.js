@@ -9,10 +9,11 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.allLinesOn = false;
 	$scope.allPlacesOn = false;
 	$scope.loadingLines = false;
+	$scope.loadingPlaces = false;
 
 	$scope.tubeLines = {};
 
-	$scope.colors = ["#00F6FF", "#68E80C", "#FFAD00", "#E80E0C", "#3E02FF"];
+	$scope.colors = ["#FF8B0D", "#E8450C", "#FF0000", "#E80CD1"];
 	$scope.places = [];
 
 	$scope.canvasLayer = null;
@@ -23,35 +24,50 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		label: "Grocery",
 		checked: false,
 		type: "grocery_or_supermarket",
-		shape: [],
-		icon_url: "glyphicons/png/glyphicons_202_shopping_cart.png"
+		places: [],
+		icon_url: "glyphicons/png/glyphicons_202_shopping_cart.png",
+		color: "#1996FF"
 	}, {
 		label: "Pharmacy",
 		checked: false,
 		type: "pharmacy",
-		shape: [],
-		icon_url: "glyphicons/png/glyphicons_298_hospital.png"
+		places: [],
+		icon_url: "glyphicons/png/glyphicons_298_hospital.png",
+		color: "#08E8CA"
 	}, {
 		label: "High Schools",
 		checked: false,
 		type: "school",
-		shape: [],
-		icon_url: "glyphicons/png/glyphicons_351_book_open.png"
+		places: [],
+		icon_url: "glyphicons/png/glyphicons_351_book_open.png",
+		color: "#15FF4D"
 	}, {
 		label: "Hospital",
 		checked: false,
 		type: "hospital",
-		shape: [],
-		icon_url: "glyphicons/png/glyphicons_299_hospital_h.png"
+		places: [],
+		icon_url: "glyphicons/png/glyphicons_299_hospital_h.png",
+		color: "#73E808"
 	}];
 
 	var typePlace = null;
 
 	$scope.togglePlaces = function() {
-		for (var i = 0; i < $scope.placeKinds.length; i++) {
-			$scope.placeKinds[i].checked = $scope.allPlacesOn;
-			$scope.checkPlace($scope.placeKinds[i]);
-		};
+		$scope.loadingPlaces= true;
+		setTimeout(function(){
+			for (var i = 0; i < $scope.placeKinds.length; i++) {
+				if($scope.placeKinds[i].checked != $scope.allPlacesOn){
+					$scope.placeKinds[i].checked = $scope.allPlacesOn;
+					$scope.checkPlace($scope.placeKinds[i],true);
+				}
+			};
+			
+			$scope.$apply(function(){
+				$scope.applyGeoFilters();
+				$scope.loadingPlaces=false;
+			});
+		}, 10);
+		
 	};
 
 	$scope.toggleLines = function() {
@@ -60,10 +76,11 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			for(var el in $scope.tubeLines){
 				if($scope.tubeLines[el].checked != $scope.allLinesOn){
 					$scope.tubeLines[el].checked = $scope.allLinesOn;
-					$scope.toggleLine($scope.tubeLines[el]);	
+					$scope.toggleLine($scope.tubeLines[el],true);	
 				}				
 			}
 			$scope.$apply(function(){
+				$scope.applyGeoFilters();
 				$scope.loadingLines=false;
 			});
 		}, 10);
@@ -142,7 +159,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.initializePlaces = function() {
 		var placesTypes = [];
 		for (var i = 0; i < $scope.placeKinds.length; i++) {
-			$scope.getPlaceShapes($scope.placeKinds[i].type);
+			$scope.getPlaceplacess($scope.placeKinds[i].type);
 			typePlace = $scope.placeKinds[i].type;
 		}
 	};
@@ -160,19 +177,24 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			$scope.toolFilter.clear();
 			angular.forEach($scope.tubeLines, function(line) {
 				if (line.checked) {
-					angular.forEach(line._displayGeometry, function(g) {
-						g.setMap(null);
-					});
-	
-					$scope.toggleLine(line);
+					$scope.toggleLine(line, true);
 				}
 			});
-		}, 200);
+			
+			angular.forEach($scope.placeKinds, function(placeKind) {
+				if (placeKind.checked) {
+					$scope.checkPlace(placeKind, true);
+				}
+			});
+			
+			$scope.applyGeoFilters();
+			
+		}, 100);
 		
 		
 	};
 
-	$scope.toggleLine = function(line) {
+	$scope.toggleLine = function(line, skipFilter) {
 
 		if (line.checked) {
 			line._circles = [];
@@ -193,18 +215,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 			}
 
 			// We add the separate "circles" to the filter.
-			$scope.toolFilter.add(line._circles);
-
-			// We create the shape we will use for display, uniting the several 
-			// circles so it is prettier.			
-			//line._displayGeometry = $scope._geometryUnion(line._circles);
-			//line._displayGeometry = $scope._geometryBuffer(line.stations, radius);
-			// angular.forEach(line._displayGeometry, function(g) {
-			// 	g.setOptions({
-			// 		fillColor: line.color
-			// 	});
-			// 	g.setMap($scope.map);
-			// });
+			$scope.toolFilter.add(line._circles, skipFilter);
 
 		} else {
 
@@ -228,11 +239,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 				}
 			});
 			
-			$scope.toolFilter.remove(removableCircles);
-
-			// angular.forEach(line._displayGeometry, function(g) {
-			// 	g.setMap(null);
-			// });
+			$scope.toolFilter.remove(removableCircles,skipFilter);
 		}
 
 		$scope.updateCanvasOverlay();
@@ -373,17 +380,34 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		$scope.togglePlaces();
 	};
 
-	$scope.checkPlace = function(placeKind) {
-		var shape = placeKind.shape;
-		if (!angular.isArray(shape)) {
-			shape = [shape];
-		}
-		for (var i = 0; i < shape.length; i++) {
-			shape[i].setMap(placeKind.checked ? $scope.map : null);
+	$scope.checkPlace = function(placeKind, skipFilter) {
+		if (placeKind.checked) {
+			placeKind._circles = [];
+			
+			var minutes = $scope.walkingMinutes==0?1:$scope.walkingMinutes;			
+			var radius = 33.3 /*meters / minute*/ * minutes;
+
+			for (var i = 0; i < placeKind.places.length; i++) {
+				placeKind.places[i].setMap($scope.map);				
+				placeKind._circles.push(this._createWalkingRadius(placeKind.places[i], radius));
+			}
+
+			// We add the separate "circles" to the filter.
+			$scope.toolFilter.add(placeKind._circles, skipFilter);
+		} else {
+			angular.forEach(placeKind.places, function(place) {
+				place._circle = null;
+				place.setMap(null);
+			});
+			
+			$scope.toolFilter.remove(placeKind._circles, skipFilter);
+			placeKind._circles = [];
 		}
 
+		$scope.updateCanvasOverlay();
 	};
-	$scope.getPlaceShapes = function(type, next_token) {
+	
+	$scope.getPlaceplacess = function(type, next_token) {
 		var lat = $scope.map.getCenter().lat();
 		var lng = $scope.map.getCenter().lng();
 		var location = new google.maps.LatLng(lat, lng);
@@ -424,7 +448,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 					scaledSize: new google.maps.Size(20, 20),
 					anchor: new google.maps.Point(10, 10)
 				});
-				$scope.placeKinds[i].shape.push(marker);
+				$scope.placeKinds[i].places.push(marker);
 				break;
 			}			
 		}
@@ -440,6 +464,13 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 	$scope.toolFilter = $scope.registerGeometryFilter("WalkingDistanceCtrl", $scope.clearAllCallback);
 
 	$scope.updateCanvasOverlay = function() {
+		$scope._doCanvasDrawing();
+		/*requestAnimationFrame(function(){
+			$scope._doCanvasDrawing();
+		});*/
+	};
+	
+	$scope._doCanvasDrawing = function() {
 		
 		if(!$scope.canvasLayer) {
 			$scope.canvasLayer =  new CanvasLayer({
@@ -451,10 +482,7 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 
 			$scope.context = $scope.canvasLayer.canvas.getContext('2d');
 		}
-
-
-
-		
+	
 
 		console.time("canvasOverlay");
 		
@@ -472,11 +500,6 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		$scope.context.clearRect(0, 0, canvasWidth, canvasHeight);
 
 
-		/* We need to scale and translate the map for current view.
-		 * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
-		 */
-		var mapProjection = $scope.map.getProjection();
-
 		/**
 		 * Clear transformation from last update by setting to identity matrix.
 		 * Could use context.resetTransform(), but most browsers don't support
@@ -489,44 +512,71 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 		var scale = Math.pow(2, $scope.map.zoom);
 		//$scope.context.scale(scale, scale);
 		bufferCtx.scale(scale, scale);
+		
+		/* We need to scale and translate the map for current view.
+		 * see https://developers.google.com/maps/documentation/javascript/maptypes#MapCoordinates
+		 */
+		var mapProjection = $scope.map.getProjection();
 
-		var offset
 		/* If the map was not translated, the topLeft corner would be 0,0 in
 		 * world coordinates. Our translation is just the vector from the
 		 * world coordinate of the topLeft corder to 0,0.
 		 */
 		try{
-			 offset = mapProjection.fromLatLngToPoint($scope.canvasLayer.getTopLeft());
+			var offset = mapProjection.fromLatLngToPoint($scope.canvasLayer.getTopLeft());
+			 //$scope.context.translate(-offset.x, -offset.y);
+			bufferCtx.translate(-offset.x, -offset.y);
 		} catch(e) {
+			// Sometimes the code failed in the fromLatLngToPoint, seemingly due to the map not 
+			// being already initialized...
 			return;
 		}
-		
-		//$scope.context.translate(-offset.x, -offset.y);
-		bufferCtx.translate(-offset.x, -offset.y);
-
 
 		$scope.context.globalAlpha = 0.5;
 
 		//$scope.context.globalCompositeOperation = "lighter";
 
 		var filtersApplied = false;
+		
+		if($scope._drawCanvasCircles($scope.tubeLines, "stations", bufferCtx, mapProjection)) {
+			filtersApplied = true;			
+		} 
+		
+		if($scope._drawCanvasCircles($scope.placeKinds, "places", bufferCtx, mapProjection)) {
+			filtersApplied = true;
+		}
+				
+		/*if(filtersApplied) {
+		 	$scope.context.globalAlpha = 0.2;
+		 	$scope.context.globalCompositeOperation = "xor";
+		 	$scope.context.fillStyle = 'rgba(0, 0, 0)';
+		 	$scope.context.fillRect(0, 0, canvasWidth, canvasHeight);
+		}*/
 
-		angular.forEach($scope.tubeLines, function(line) {
-			if(!line.checked) {
+		delete buffer;
+
+		
+		console.timeEnd("canvasOverlay");
+	};
+
+	$scope._drawCanvasCircles = function(filters, filterAttr, bufferCtx, mapProjection) {
+		var filtersApplied = false;
+		angular.forEach(filters, function(filter) {
+			if(!filter.checked) {
 				return;
 			}
 
 			filtersApplied = true;
 
-			bufferCtx.fillStyle = line.color;
+			bufferCtx.fillStyle = filter.color;
 
-			bufferCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+			bufferCtx.clearRect(0, 0, bufferCtx.canvas.width, bufferCtx.canvas.height);
 			
-			angular.forEach(line.stations, function(station)  {
+			angular.forEach(filter[filterAttr], function(filterElement)  {
 				// project rectLatLng to world coordinates and draw
 				bufferCtx.beginPath();
 				
-				angular.forEach(station._circle.latLngs.b[0].b, function(polyPoint, idx) {
+				angular.forEach(filterElement._circle.latLngs.b[0].b, function(polyPoint, idx) {
 					var worldPoint = mapProjection.fromLatLngToPoint(polyPoint);
 					if(idx>0) {
 						bufferCtx.lineTo(worldPoint.x, worldPoint.y);
@@ -539,22 +589,10 @@ googleGisDemo.controller("WalkingDistanceCtrl", function($scope, $http) {
 				bufferCtx.fill();
 			});
 
-			$scope.context.drawImage(buffer, 0,0, canvasWidth, canvasHeight);
+			$scope.context.drawImage(bufferCtx.canvas, 0,0, bufferCtx.canvas.width, bufferCtx.canvas.height);
 		});
-
 		
-		
-		// if(filtersApplied) {
-		// 	$scope.context.globalAlpha = 0.2;
-		// 	$scope.context.globalCompositeOperation = "xor";
-		// 	$scope.context.fillStyle = 'rgba(0, 0, 0)';
-		// 	$scope.context.fillRect(0, 0, canvasWidth, canvasHeight);
-		// }
-
-		delete buffer;
-
-		
-		console.timeEnd("canvasOverlay");
+		return filtersApplied;
 	}
 	
 	// We add the British National Grid Projection.
