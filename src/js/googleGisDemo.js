@@ -1,6 +1,6 @@
 var googleGisDemo = angular.module("googleGisDemo", ["scroll", "ui.bootstrap"]);
 
-googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
+googleGisDemo.controller("AppCtrl", function($scope, $http, $modal) {
 	$scope.googleAPIKey = "AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w";
 
 	$scope.showPanel = true;
@@ -394,6 +394,16 @@ googleGisDemo.controller("AppCtrl", function($scope, $http, $filter) {
 
 	$scope.filter = function(result) {
 		return result.properties.price > 0;
+	};
+
+	$scope.showAbout = function() {
+		$scope.aboutDlg = $modal.open({
+			templateUrl: 'html/about.html'
+		});
+	};
+
+	$scope.closeAbout = function() {
+		$scope.aboutDlg.close();
 	};
 
 	$(document).ready(function() {

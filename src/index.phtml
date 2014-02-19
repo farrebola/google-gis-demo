@@ -11,9 +11,7 @@
 	    <link href="../bower_components/bootstrap-slider/slider.css" rel="stylesheet" media="screen">
 
 		<!-- custom css files -->
-	    <link href="css/app.css" rel="stylesheet" media="screen">
-	    <link href="css/walking_distance.css" rel="stylesheet" media="screen">
-	    <link href="css/neighbourhoods.css" rel="stylesheet" media="screen">	    
+	    <link href="css/app.css" rel="stylesheet" media="screen">    
 	 
 	    <!-- boostrap old IEs support -->
 	    <!--[if lt IE 9]>
@@ -51,8 +49,8 @@
     	
     	<script src="js/searchbar.js"></script>
 
-    	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w&sensor=false&libraries=drawing,visualization,geometry,places"></script>    	 
-    	  <script type="text/javascript" src="js/canvaslayer/src/CanvasLayer.js"></script>    	 
+    	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVLxK6W-SOvjOhuhtmG5W9ot24uYrxH2w&sensor=false&libraries=drawing,visualization,geometry,places"></script>    	 
+    	<script type="text/javascript" src="js/canvaslayer/src/CanvasLayer.js"></script>    	 
 	</head>
 
 	<body ng-controller="AppCtrl">
@@ -78,10 +76,10 @@
 						<select class="form-control btn btn-default" ng-model="filterIntersectionMode" ng-change="applyGeoFilters()"
 							ng-options="o.intersection as o.label for o in filterCombinationModes">                          
                         </select>
-						<ng-include src="'commute_time.html'" class="btn-group"></ng-include>
-						<ng-include src="'walking_distance.html'" class="btn-group"></ng-include>
-						<ng-include src="'neighbourhoods.html'" class="btn-group"></ng-include>
-			    		<ng-include src="'geofence.html'" class="btn-group"></ng-include>
+						<ng-include src="'html/commute_time.html'" class="btn-group"></ng-include>
+						<ng-include src="'html/walking_distance.html'" class="btn-group"></ng-include>
+						<ng-include src="'html/neighbourhoods.html'" class="btn-group"></ng-include>
+			    		<ng-include src="'html/geofence.html'" class="btn-group"></ng-include>
 						
 						<button type="button" class="btn btn-default" ng-disabled="!geometryFilterCount"
 							ng-click="clearAllToolFilters()">
@@ -93,19 +91,15 @@
 				
 			    <ul class="nav navbar-nav navbar-right">
 			      <li class="dropdown">
-			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-			        <ul class="dropdown-menu topbar">
-			          <li><a href="#">Action</a></li>
-			          <li><a href="#">Another action</a></li>
-			          <li><a href="#">Something else here</a></li>
-			          <li class="divider"></li>
-			          <li><a href="#">Separated link</a></li>
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$userNickname?><span class="caret"></span></b></a>
+			        <ul class="dropdown-menu" role="menu">
+			          <li><a href="<?=$logoutURL?>">Logout</a></li>
+			          <li><a href="#" ng-click="showAbout()">About</a></li>			          
 			        </ul>
 			      </li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
-		</nav>
-		
+		</nav>		
 		
 		<div class="container-fluid">
 			<div class="row-fluid full-height">

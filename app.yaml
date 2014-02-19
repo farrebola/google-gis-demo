@@ -4,13 +4,27 @@ runtime: php
 api_version: 1
 
 handlers:
-
 - url: /bower_components
   static_dir: bower_components
 
-- url: /
-  static_dir: src
+- url: /js
+  static_dir: src/js
   login: required
 
+- url: /css
+  static_dir: src/css
+  login: required
+
+- url: /glyphicons
+  static_dir: src/glyphicons
+  login: required
+
+- url: /html
+  static_dir: src/html
+  login: required
+
+- url: /
+  script: src/index.php
+  login: required
 
 
