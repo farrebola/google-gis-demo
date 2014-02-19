@@ -1,9 +1,0 @@
-.slider-horizontal {
-	width: 200px !important;
-	/* margin-top: 10px; */
-}
-.slider-handle.round {
-	background-color: blue;
-	border-radius: 50%;
-	background-image: linear-gradient(to bottom, #428bca 0%, #428bca 100%);
-}
