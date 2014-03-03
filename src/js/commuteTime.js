@@ -8,78 +8,74 @@ googleGisDemo.controller("CommuteTimeCtrl", function($scope, $http) {
 
 	$scope.search="";
 
-	var input = (document.getElementById('pac-input'));
-	  
-	//$scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-  	var searchBox = new google.maps.places.SearchBox((input));
-  	var markers = [];
-
-  	// Listen for the event fired when the user selects an item from the
-  	// pick list. Retrieve the matching places for that item.
-  	google.maps.event.addListener(searchBox, 'places_changed', function() {
-    	var places = searchBox.getPlaces();
-
-	    for (var i = 0, marker; marker = markers[i]; i++) {
-	      marker.setMap(null);
-	    }
-
-	    // For each place, get the icon, place name, and location.
-	    markers = [];
-	    var bounds = new google.maps.LatLngBounds();
-	    for (var i = 0, place; place = places[i]; i++) {
-	      var image = {
-	        url: place.icon,
-	        size: new google.maps.Size(71, 71),
-	        origin: new google.maps.Point(0, 0),
-	        anchor: new google.maps.Point(17, 34),
-	        scaledSize: new google.maps.Size(25, 25)
-	      };
-
-	      // Create a marker for each place.
-	      var marker = new google.maps.Marker({
-	        map: $scope.map,
-	        icon: image,
-	        title: place.name,
-	        position: place.geometry.location
-	      });
-
-	      markers.push(marker);
-
-	      bounds.extend(place.geometry.location);
-	    }
-
-    $scope.map.fitBounds(bounds);
-  });
-
-	// Bias the SearchBox results towards places that are within the bounds of the
-	// current map's viewport.
-	google.maps.event.addListener(map, 'bounds_changed', function() {
-		var bounds = map.getBounds();
-		searchBox.setBounds(bounds);
-	});
-
 	var listhandler = null;
+	var marker = null;
+	var circle = null;
 
 	var handlerClickReverseGeo = function(event){
-	    var geocoder = new google.maps.Geocoder();
-   		geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
-        if (status !== google.maps.GeocoderStatus.OK) {
-            alert(status);
-        }
-        // This is checking to see if the Geoeode Status is OK before proceeding
-        if (status == google.maps.GeocoderStatus.OK) {
-            var address = (results[0].formatted_address);
-            document.getElementById('selectedComm').value = address;
-        }
-    });
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode({'latLng': event.latLng, 'region': 'GB', 'language':'en_GB'}, function (results, status) {
+		if (status !== google.maps.GeocoderStatus.OK) {
+			alert(status);
+		}
+		// This is checking to see if the Geoeode Status is OK before proceeding
+		if (status == google.maps.GeocoderStatus.OK) {
+			var address = (results[0].formatted_address);
+			//document.getElementById('selectedComm').value = address;
+			if (marker !== null){
+				marker.setMap(null);
+				circle.setMap(null);
+				circle=null;
+				$scope.value=10;
+			}
+			marker = new google.maps.Marker({
+				position: event.latLng,
+				title: results[0].formatted_address,
+				clickable: true,
+				icon: './glyphicons/png/glyphicons_089_building.png' ,
+				map: $scope.map
+			});
+			marker.showInfoWindow = function() {
+				if(!marker.popup) {
+					marker.popup = new google.maps.InfoWindow({
+					content: results[0].formatted_address
+					});             
+				}
+				marker.popup.open($scope.map, this);
+			};
+			marker.showInfoWindow();
+			$scope.map.panTo(event.latLng);
+			marker.addListener("click", function(event){
+				marker.showInfoWindow();
+			});
+			//creation of walking area
+			circle = new google.maps.Circle({
+				strokeColor: "#0000FF",
+				strokeOpacity: 0.8,
+				strokeWeight: 2,
+				fillColor: "#0000FF",
+				fillOpacity: 0.35,
+				map: $scope.map,
+				radius: $scope.value*100
+			});
+			circle.bindTo('center', marker, 'position');
+		}
+	});	
 
 		google.maps.event.removeListener(listhandler);
-	}
-
+	};
 
 	$scope.revGeoSearch = function (){
 		listhandler = google.maps.event.addListener($scope.map, 'click', handlerClickReverseGeo);
+	};
+
+	$scope.timeChange = function(elem) {
+		//$scope.toolFilter.clear();
+		if (marker !== null){
+			if (circle !== null){
+				circle.setRadius(elem.value*100);
+			}
+		}
 	};
 
 	// Stop the propagation of the click event

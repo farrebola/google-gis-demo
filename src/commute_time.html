@@ -18,7 +18,7 @@
 			</p>
 			<p>
 				<span>Maximun walking time: </span>
-				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value"/>
+				<slider id="wds" type="text" data-slider-min="{{minvalue}}" data-slider-max="{{maxvalue}}" data-slider-step="5" data-slider-value="{{value}}" ng-model="value" ng-change="timeChange(this)"/>
 				<span class="span" id="wdsCurrentSliderValLabel"><span id="wdsSliderVal">{{value}}</span> min</span>
 			</p>
     	</form>
